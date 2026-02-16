@@ -10,10 +10,10 @@ export default function CatalogGrid({ connectors, totalCount }: CatalogGridProps
   return (
     <div>
       {/* Count Header */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <div className="mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Showing {connectors.length.toLocaleString()} of {totalCount.toLocaleString()} connectors
-        </h2>
+        </p>
       </div>
 
       {/* Grid */}
@@ -24,9 +24,7 @@ export default function CatalogGrid({ connectors, totalCount }: CatalogGridProps
           </p>
         </div>
       ) : (
-        <div className="grid gap-4" style={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))'
-        }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {connectors.map(connector => (
             <ConnectorCard key={connector.id} connector={connector} />
           ))}

@@ -45,29 +45,36 @@ export default function FilterBar({
     }
   };
 
+  const clearAllFilters = () => {
+    onTypeChange([]);
+    onAuthTypeChange([]);
+    onTriggersChange(null);
+    onCategoryChange([]);
+  };
+
+  const hasActiveFilters =
+    selectedTypes.length > 0 ||
+    selectedAuthTypes.length > 0 ||
+    hasTriggers !== null ||
+    selectedCategories.length > 0;
+
   const FilterChip = ({
     label,
     active,
     onClick,
-    color = 'blue'
   }: {
     label: string;
     active: boolean;
     onClick: () => void;
-    color?: 'green' | 'blue' | 'gray' | 'purple' | 'yellow';
   }) => {
-    const colorClasses = {
-      green: active ? 'bg-green-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-      blue: active ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-      gray: active ? 'bg-gray-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-      purple: active ? 'bg-purple-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-      yellow: active ? 'bg-yellow-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-    };
-
     return (
       <button
         onClick={onClick}
-        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${colorClasses[color]}`}
+        className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+          active
+            ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
+            : 'bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+        }`}
       >
         {label}
       </button>
@@ -75,97 +82,113 @@ export default function FilterBar({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Type Filters */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Type</h3>
-        <div className="flex flex-wrap gap-2">
-          <FilterChip
-            label="Certified"
-            active={selectedTypes.includes('certified')}
-            onClick={() => toggleType('certified')}
-            color="green"
-          />
-          <FilterChip
-            label="Independent Publisher"
-            active={selectedTypes.includes('independent')}
-            onClick={() => toggleType('independent')}
-            color="blue"
-          />
-          <FilterChip
-            label="Custom"
-            active={selectedTypes.includes('custom')}
-            onClick={() => toggleType('custom')}
-            color="gray"
-          />
-        </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Type:</span>
+        <FilterChip
+          label="Certified"
+          active={selectedTypes.includes('certified')}
+          onClick={() => toggleType('certified')}
+        />
+        <FilterChip
+          label="Independent"
+          active={selectedTypes.includes('independent')}
+          onClick={() => toggleType('independent')}
+        />
+        <FilterChip
+          label="Custom"
+          active={selectedTypes.includes('custom')}
+          onClick={() => toggleType('custom')}
+        />
       </div>
 
       {/* Auth Type Filters */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Authentication</h3>
-        <div className="flex flex-wrap gap-2">
-          <FilterChip
-            label="OAuth2"
-            active={selectedAuthTypes.includes('oauth2')}
-            onClick={() => toggleAuthType('oauth2')}
-            color="purple"
-          />
-          <FilterChip
-            label="API Key"
-            active={selectedAuthTypes.includes('apiKey')}
-            onClick={() => toggleAuthType('apiKey')}
-            color="blue"
-          />
-          <FilterChip
-            label="Basic"
-            active={selectedAuthTypes.includes('basic')}
-            onClick={() => toggleAuthType('basic')}
-            color="yellow"
-          />
-          <FilterChip
-            label="None"
-            active={selectedAuthTypes.includes('none')}
-            onClick={() => toggleAuthType('none')}
-            color="gray"
-          />
-        </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Auth:</span>
+        <FilterChip
+          label="OAuth2"
+          active={selectedAuthTypes.includes('oauth2')}
+          onClick={() => toggleAuthType('oauth2')}
+        />
+        <FilterChip
+          label="API Key"
+          active={selectedAuthTypes.includes('apiKey')}
+          onClick={() => toggleAuthType('apiKey')}
+        />
+        <FilterChip
+          label="Basic"
+          active={selectedAuthTypes.includes('basic')}
+          onClick={() => toggleAuthType('basic')}
+        />
+        <FilterChip
+          label="None"
+          active={selectedAuthTypes.includes('none')}
+          onClick={() => toggleAuthType('none')}
+        />
       </div>
 
       {/* Triggers Filter */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Has Triggers</h3>
-        <div className="flex flex-wrap gap-2">
-          <FilterChip
-            label="Yes"
-            active={hasTriggers === true}
-            onClick={() => onTriggersChange(hasTriggers === true ? null : true)}
-            color="green"
-          />
-          <FilterChip
-            label="No"
-            active={hasTriggers === false}
-            onClick={() => onTriggersChange(hasTriggers === false ? null : false)}
-            color="gray"
-          />
-        </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Triggers:</span>
+        <FilterChip
+          label="Yes"
+          active={hasTriggers === true}
+          onClick={() => onTriggersChange(hasTriggers === true ? null : true)}
+        />
+        <FilterChip
+          label="No"
+          active={hasTriggers === false}
+          onClick={() => onTriggersChange(hasTriggers === false ? null : false)}
+        />
       </div>
 
       {/* Categories Filter */}
       {allCategories.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Categories</h3>
-          <div className="flex flex-wrap gap-2">
-            {allCategories.slice(0, 15).map(category => (
-              <FilterChip
-                key={category}
-                label={category}
-                active={selectedCategories.includes(category)}
-                onClick={() => toggleCategory(category)}
-                color="blue"
-              />
-            ))}
+        <div className="flex flex-wrap items-start gap-2">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 pt-1">Category:</span>
+          <div className="flex-1">
+            <select
+              className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value=""
+              onChange={(e) => {
+                if (e.target.value) {
+                  toggleCategory(e.target.value);
+                }
+              }}
+            >
+              <option value="">Select a category...</option>
+              {allCategories.map(category => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            {selectedCategories.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedCategories.map(category => (
+                  <FilterChip
+                    key={category}
+                    label={category}
+                    active={true}
+                    onClick={() => toggleCategory(category)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
+        </div>
+      )}
+
+      {/* Clear All Button */}
+      {hasActiveFilters && (
+        <div className="pt-2">
+          <button
+            onClick={clearAllFilters}
+            className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+          >
+            Clear all filters
+          </button>
         </div>
       )}
     </div>
