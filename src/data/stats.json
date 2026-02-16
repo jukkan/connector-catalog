@@ -1,16 +1,16 @@
 {
-  "total": 1115,
+  "total": 1117,
   "byType": {
-    "certified": 651,
-    "independent": 441,
+    "certified": 652,
+    "independent": 442,
     "custom": 23
   },
   "byCategory": {},
   "byAuthType": {
     "apiKey": 586,
-    "none": 211,
-    "oauth2": 238,
+    "none": 212,
+    "oauth2": 239,
     "basic": 80
   },
-  "timestamp": "2026-02-16T16:13:31.321Z"
+  "timestamp": "2026-02-16T18:12:13.817Z"
 }
