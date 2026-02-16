@@ -1,0 +1,16 @@
+{
+  "name": "connector-catalog",
+  "version": "1.0.0",
+  "description": "Search, filter and visualize Microsoft's various connectors for low-code and AI apps and automation",
+  "type": "module",
+  "scripts": {
+    "fetch-data": "node scripts/fetch-data.mjs"
+  },
+  "keywords": [
+    "powerplatform",
+    "connectors",
+    "catalog"
+  ],
+  "author": "",
+  "license": "MIT"
+}
