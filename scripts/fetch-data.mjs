@@ -184,7 +184,7 @@ function generateStats(connectors) {
   // Count by category
   for (const connector of connectors) {
     if (connector.categories) {
-      const categories = connector.categories.split(',').map(c => c.trim());
+      const categories = connector.categories.split(';').map(c => c.trim());
       for (const category of categories) {
         if (category) {
           stats.byCategory[category] = (stats.byCategory[category] || 0) + 1;
