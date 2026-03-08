@@ -6510,21 +6510,6 @@
     "website": null
   },
   {
-    "id": "RecordedFutureV2",
-    "displayName": "Recorded Future V2",
-    "description": "Recorded Future Connector enables access to the Recorded Future Intelligence. The connector has dedicated actions for pulling Recorded Future indicators (IP, Domain, URL, Hash) and associated context ",
-    "publisher": "Recorded Future",
-    "type": "certified",
-    "brandColor": "#0071CE",
-    "authType": "apiKey",
-    "operationCount": 19,
-    "actionCount": 19,
-    "triggerCount": 0,
-    "hasTriggers": false,
-    "categories": null,
-    "website": null
-  },
-  {
     "id": "Redque",
     "displayName": "Redque",
     "description": "Accessing and managing the Redque system.",
@@ -13914,6 +13899,21 @@
     "authType": "apiKey",
     "operationCount": 1,
     "actionCount": 1,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": null,
+    "website": null
+  },
+  {
+    "id": "PDF Tools by Tachytelic",
+    "displayName": "PDF Tools by Tachytelic",
+    "description": "PDF Tools is a free set of actions for working with PDF files. It provides capabilities to merge, split, extract pages, extract text, optimize file size, and manage PDF metadata. Designed to simplify ",
+    "publisher": "Paul Murana",
+    "type": "independent",
+    "brandColor": "#da3b01",
+    "authType": "none",
+    "operationCount": 7,
+    "actionCount": 7,
     "triggerCount": 0,
     "hasTriggers": false,
     "categories": null,
