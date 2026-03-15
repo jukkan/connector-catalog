@@ -70,15 +70,16 @@ function processConnector(connectorPath, connectorId, type) {
 
   // Extract basic information
   const displayName = swagger.info?.title || connectorId;
-  let description = swagger.info?.description || '';
-  if (description.length > 200) {
-    description = description.substring(0, 200);
-  }
+  const description = swagger.info?.description || '';
 
   // Extract metadata
   const metadata = swagger.info?.['x-ms-connector-metadata'];
   const categories = getMetadataValue(metadata, 'Categories');
   const website = getMetadataValue(metadata, 'Website');
+
+  // Extract contact information
+  const contactUrl = swagger.info?.contact?.url || null;
+  const contactName = swagger.info?.contact?.name || null;
 
   // Extract publisher
   const publisher = properties?.properties?.publisher || swagger.info?.['x-ms-api-annotation']?.family || 'Unknown';
@@ -132,7 +133,9 @@ function processConnector(connectorPath, connectorId, type) {
     triggerCount,
     hasTriggers: triggerCount > 0,
     categories,
-    website
+    website,
+    contactUrl,
+    contactName
   };
 }
 
