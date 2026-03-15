@@ -12,6 +12,8 @@ export interface Connector {
   hasTriggers: boolean;
   categories: string | null;
   website: string | null;
+  contactUrl: string | null;
+  contactName: string | null;
 }
 
 export interface Stats {
