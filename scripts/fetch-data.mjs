@@ -72,8 +72,8 @@ function processConnector(connectorPath, connectorId, type) {
   const displayName = swagger.info?.title || connectorId;
   const description = swagger.info?.description || '';
 
-  // Extract metadata
-  const metadata = swagger.info?.['x-ms-connector-metadata'];
+  // Extract metadata (can be at root level or inside info)
+  const metadata = swagger['x-ms-connector-metadata'] || swagger.info?.['x-ms-connector-metadata'];
   const categories = getMetadataValue(metadata, 'Categories');
   const website = getMetadataValue(metadata, 'Website');
 

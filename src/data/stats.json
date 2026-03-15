@@ -5,12 +5,35 @@
     "independent": 442,
     "custom": 23
   },
-  "byCategory": {},
+  "byCategory": {
+    "IT Operations": 104,
+    "Website": 87,
+    "Productivity": 274,
+    "Business Management": 88,
+    "AI": 111,
+    "Content and Files": 111,
+    "Marketing": 53,
+    "Data": 259,
+    "Collaboration": 86,
+    "Communication": 105,
+    "Finance": 42,
+    "Sales and CRM": 92,
+    "Security": 39,
+    "Internet of Things": 17,
+    "Business Intelligence": 63,
+    "Commerce": 32,
+    "Human Resources": 26,
+    "website": 1,
+    "Social Media": 20,
+    "Social media": 1,
+    "Lifestyle and Entertainment": 73,
+    "collaboration": 1
+  },
   "byAuthType": {
     "apiKey": 586,
     "none": 212,
     "oauth2": 239,
     "basic": 80
   },
-  "timestamp": "2026-03-15T10:59:20.511Z"
+  "timestamp": "2026-03-15T11:14:22.481Z"
 }
