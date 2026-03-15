@@ -6,6 +6,13 @@ interface ConnectorCardProps {
 }
 
 export default function ConnectorCard({ connector, onClick }: ConnectorCardProps) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   const getTypeBadgeColor = (type: string) => {
     switch (type) {
       case 'certified':
@@ -38,7 +45,7 @@ export default function ConnectorCard({ connector, onClick }: ConnectorCardProps
       onClick={onClick}
       role="button"
       tabIndex={0}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
+      onKeyDown={handleKeyDown}
     >
       {/* Header row: brand circle + displayName */}
       <div className="flex items-center gap-3 mb-2">

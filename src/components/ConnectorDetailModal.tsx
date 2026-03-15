@@ -54,7 +54,9 @@ function getAuthTypeLabel(authType: string) {
 }
 
 function buildMicrosoftLearnUrl(connectorId: string) {
-  const slug = connectorId.toLowerCase().replace(/\s+/g, '');
+  const slug = connectorId
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
   return `https://learn.microsoft.com/en-us/connectors/${encodeURIComponent(slug)}/`;
 }
 
@@ -151,7 +153,7 @@ export default function ConnectorDetailModal({ connector, onClose }: ConnectorDe
             <div>
               <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Triggers</span>
               <p className="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                {connector.hasTriggers ? `⚡ ${connector.triggerCount}` : 'None'}
+                {connector.hasTriggers ? <><span aria-hidden="true">⚡</span> {connector.triggerCount}</> : 'None'}
               </p>
             </div>
           </div>
