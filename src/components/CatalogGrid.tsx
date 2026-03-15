@@ -4,9 +4,10 @@ import type { Connector } from '../types';
 interface CatalogGridProps {
   connectors: Connector[];
   totalCount: number;
+  onConnectorClick: (connector: Connector) => void;
 }
 
-export default function CatalogGrid({ connectors, totalCount }: CatalogGridProps) {
+export default function CatalogGrid({ connectors, totalCount, onConnectorClick }: CatalogGridProps) {
   return (
     <div>
       {/* Count Header */}
@@ -26,7 +27,7 @@ export default function CatalogGrid({ connectors, totalCount }: CatalogGridProps
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {connectors.map(connector => (
-            <ConnectorCard key={connector.id} connector={connector} />
+            <ConnectorCard key={connector.id} connector={connector} onClick={() => onConnectorClick(connector)} />
           ))}
         </div>
       )}
