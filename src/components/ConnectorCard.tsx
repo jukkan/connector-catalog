@@ -2,9 +2,17 @@ import type { Connector } from '../types';
 
 interface ConnectorCardProps {
   connector: Connector;
+  onClick: () => void;
 }
 
-export default function ConnectorCard({ connector }: ConnectorCardProps) {
+export default function ConnectorCard({ connector, onClick }: ConnectorCardProps) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   const getTypeBadgeColor = (type: string) => {
     switch (type) {
       case 'certified':
@@ -32,7 +40,13 @@ export default function ConnectorCard({ connector }: ConnectorCardProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all">
+    <div
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all cursor-pointer"
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
       {/* Header row: brand circle + displayName */}
       <div className="flex items-center gap-3 mb-2">
         <div

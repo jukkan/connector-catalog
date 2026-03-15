@@ -3,6 +3,7 @@ import SearchBar from './components/SearchBar';
 import FilterBar from './components/FilterBar';
 import CatalogGrid from './components/CatalogGrid';
 import StatsBar from './components/StatsBar';
+import ConnectorDetailModal from './components/ConnectorDetailModal';
 import connectorsData from './data/connectors.json';
 import statsData from './data/stats.json';
 import type { Connector, Stats } from './types';
@@ -36,6 +37,7 @@ function App() {
   const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(getInitialState().authTypes);
   const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
+  const [selectedConnector, setSelectedConnector] = useState<Connector | null>(null);
 
   // Update URL when filters change
   useEffect(() => {
@@ -181,8 +183,17 @@ function App() {
         <CatalogGrid
           connectors={filteredConnectors}
           totalCount={connectors.length}
+          onConnectorClick={setSelectedConnector}
         />
       </main>
+
+      {/* Connector Detail Modal */}
+      {selectedConnector && (
+        <ConnectorDetailModal
+          connector={selectedConnector}
+          onClose={() => setSelectedConnector(null)}
+        />
+      )}
     </div>
   );
 }

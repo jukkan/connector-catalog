@@ -41,11 +41,15 @@ function parseJsonFile(filePath) {
 
 /**
  * Extract metadata value from x-ms-connector-metadata array
+ * Handles both {name, value} and {propertyName, propertyValue} formats
  */
 function getMetadataValue(metadata, propertyName) {
   if (!Array.isArray(metadata)) return null;
-  const item = metadata.find(m => m.name === propertyName);
-  return item ? item.value : null;
+  const item = metadata.find(
+    m => m.name === propertyName || m.propertyName === propertyName
+  );
+  if (!item) return null;
+  return item.value ?? item.propertyValue ?? null;
 }
 
 /**
