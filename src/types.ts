@@ -42,7 +42,7 @@ export interface Stats {
   withPrivacyPolicy: number;
 }
 
-export type SortOption = 'name-asc' | 'name-desc' | 'operations-desc' | 'publisher-asc';
+export type SortOption = 'updated' | 'added' | 'name-asc' | 'name-desc' | 'operations-desc' | 'publisher-asc';
 
 export interface FilterState {
   search: string;
