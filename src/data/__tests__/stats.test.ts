@@ -36,4 +36,13 @@ describe('stats.json consistency', () => {
   it('stats.recentlyAdded is a non-negative number', () => {
     expect(stats.recentlyAdded).toBeGreaterThanOrEqual(0);
   });
+
+  it('stats.byCapability is an object', () => {
+    expect(typeof stats.byCapability).toBe('object');
+    expect(stats.byCapability).not.toBeNull();
+  });
+
+  it('stats.withPrivacyPolicy is a non-negative number', () => {
+    expect(stats.withPrivacyPolicy).toBeGreaterThanOrEqual(0);
+  });
 });

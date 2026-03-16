@@ -35,7 +35,14 @@
     "oauth2": 239,
     "basic": 80
   },
-  "timestamp": "2026-03-16T09:39:13.911Z",
+  "timestamp": "2026-03-16T10:09:42.363Z",
   "recentlyUpdated": 30,
-  "recentlyAdded": 12
+  "recentlyAdded": 12,
+  "byCapability": {
+    "actions": 134,
+    "triggers": 37,
+    "gateway": 2,
+    "cloud only": 1
+  },
+  "withPrivacyPolicy": 1056
 }
