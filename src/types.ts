@@ -16,6 +16,9 @@ export interface Connector {
   contactName: string | null;
   firstCommitDate: string | null;
   lastCommitDate: string | null;
+  apiVersion: string | null;
+  privacyPolicy: string | null;
+  capabilities: string[];
 }
 
 export interface Stats {
@@ -35,6 +38,8 @@ export interface Stats {
   timestamp: string;
   recentlyUpdated: number;
   recentlyAdded: number;
+  byCapability: Record<string, number>;
+  withPrivacyPolicy: number;
 }
 
 export type SortOption = 'name-asc' | 'name-desc' | 'operations-desc' | 'publisher-asc';

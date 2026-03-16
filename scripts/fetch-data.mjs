@@ -123,6 +123,29 @@ function processConnector(connectorPath, connectorId, type, dateMap) {
   // Extract brand color
   const brandColor = properties?.properties?.iconBrandColor || null;
 
+  // API version from swagger
+  const apiVersion = swagger.info?.version || null;
+
+  // Privacy policy from connector metadata
+  const rawPrivacyPolicy = getMetadataValue(metadata, 'Privacy policy') || 
+                           getMetadataValue(metadata, 'Privacy Policy') || null;
+  let privacyPolicy = null;
+  if (rawPrivacyPolicy) {
+    try {
+      const urlStr = rawPrivacyPolicy.startsWith('www.') ? `https://${rawPrivacyPolicy}` : rawPrivacyPolicy;
+      const parsed = new URL(urlStr);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        privacyPolicy = rawPrivacyPolicy;
+      }
+    } catch {
+      // Not a valid URL, skip
+    }
+  }
+
+  // Capabilities from apiProperties (e.g., ["cloud"], ["onPremiseGateway"])
+  const rawCapabilities = properties?.properties?.capabilities || [];
+  const capabilities = rawCapabilities.map(c => String(c).toLowerCase());
+
   // Extract auth type
   let authType = 'none';
   if (swagger.securityDefinitions) {
@@ -178,7 +201,10 @@ function processConnector(connectorPath, connectorId, type, dateMap) {
     contactUrl,
     contactName,
     firstCommitDate: dates?.firstDate ?? null,
-    lastCommitDate: dates?.lastDate ?? null
+    lastCommitDate: dates?.lastDate ?? null,
+    apiVersion,
+    privacyPolicy,
+    capabilities
   };
 }
 
@@ -256,6 +282,19 @@ function generateStats(connectors) {
   stats.recentlyAdded = connectors.filter(
     c => c.firstCommitDate && c.firstCommitDate >= ninetyDaysAgo
   ).length;
+
+  // Count by capability
+  stats.byCapability = {};
+  for (const connector of connectors) {
+    if (connector.capabilities && connector.capabilities.length > 0) {
+      for (const cap of connector.capabilities) {
+        stats.byCapability[cap] = (stats.byCapability[cap] || 0) + 1;
+      }
+    }
+  }
+
+  // Count connectors with privacy policy
+  stats.withPrivacyPolicy = connectors.filter(c => c.privacyPolicy).length;
 
   return stats;
 }

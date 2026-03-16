@@ -116,4 +116,30 @@ describe('connectors.json schema validation', () => {
     );
     expect(recentlyUpdated.length).toBeGreaterThanOrEqual(1);
   });
+
+  it('apiVersion is null or a non-empty string for every connector', () => {
+    for (const connector of connectors) {
+      if (connector.apiVersion !== null) {
+        expect(typeof connector.apiVersion).toBe('string');
+        expect(connector.apiVersion.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('capabilities is always an array', () => {
+    for (const connector of connectors) {
+      expect(Array.isArray(connector.capabilities)).toBe(true);
+    }
+  });
+
+  it('privacyPolicy is null or a non-empty string that looks like a URL', () => {
+    const urlPattern = /^https?:\/\/|^www\./;
+    for (const connector of connectors) {
+      if (connector.privacyPolicy !== null) {
+        expect(typeof connector.privacyPolicy).toBe('string');
+        expect(connector.privacyPolicy.length).toBeGreaterThan(0);
+        expect(connector.privacyPolicy).toMatch(urlPattern);
+      }
+    }
+  });
 });
