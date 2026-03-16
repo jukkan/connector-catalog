@@ -28,4 +28,12 @@ describe('stats.json consistency', () => {
     expect(stats.byType).toHaveProperty('independent');
     expect(stats.byType).toHaveProperty('custom');
   });
+
+  it('stats.recentlyUpdated is a non-negative number', () => {
+    expect(stats.recentlyUpdated).toBeGreaterThanOrEqual(0);
+  });
+
+  it('stats.recentlyAdded is a non-negative number', () => {
+    expect(stats.recentlyAdded).toBeGreaterThanOrEqual(0);
+  });
 });

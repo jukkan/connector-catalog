@@ -74,4 +74,46 @@ describe('connectors.json schema validation', () => {
     const withDescription = connectors.filter(c => c.description && c.description.length > 0).length;
     expect(withDescription / connectors.length).toBeGreaterThan(0.9);
   });
+
+  it('more than 90% of connectors have non-null firstCommitDate', () => {
+    const withDate = connectors.filter(c => c.firstCommitDate !== null).length;
+    expect(withDate / connectors.length).toBeGreaterThan(0.9);
+  });
+
+  it('more than 90% of connectors have non-null lastCommitDate', () => {
+    const withDate = connectors.filter(c => c.lastCommitDate !== null).length;
+    expect(withDate / connectors.length).toBeGreaterThan(0.9);
+  });
+
+  it('all non-null dates are valid ISO date strings', () => {
+    for (const connector of connectors) {
+      if (connector.firstCommitDate !== null) {
+        const date = new Date(connector.firstCommitDate);
+        expect(date.toString(), `invalid firstCommitDate for ${connector.id}`).not.toBe('Invalid Date');
+      }
+      if (connector.lastCommitDate !== null) {
+        const date = new Date(connector.lastCommitDate);
+        expect(date.toString(), `invalid lastCommitDate for ${connector.id}`).not.toBe('Invalid Date');
+      }
+    }
+  });
+
+  it('lastCommitDate >= firstCommitDate when both are non-null', () => {
+    for (const connector of connectors) {
+      if (connector.firstCommitDate !== null && connector.lastCommitDate !== null) {
+        expect(
+          connector.lastCommitDate >= connector.firstCommitDate,
+          `lastCommitDate before firstCommitDate for ${connector.id}`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('at least 1 connector has been updated in the last 180 days', () => {
+    const cutoff = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString();
+    const recentlyUpdated = connectors.filter(
+      c => c.lastCommitDate !== null && c.lastCommitDate >= cutoff
+    );
+    expect(recentlyUpdated.length).toBeGreaterThanOrEqual(1);
+  });
 });

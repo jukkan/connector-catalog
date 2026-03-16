@@ -14,6 +14,8 @@ export interface Connector {
   website: string | null;
   contactUrl: string | null;
   contactName: string | null;
+  firstCommitDate: string | null;
+  lastCommitDate: string | null;
 }
 
 export interface Stats {
@@ -31,6 +33,8 @@ export interface Stats {
     basic: number;
   };
   timestamp: string;
+  recentlyUpdated: number;
+  recentlyAdded: number;
 }
 
 export type SortOption = 'name-asc' | 'name-desc' | 'operations-desc' | 'publisher-asc';
