@@ -19,10 +19,46 @@ const CONNECTOR_TYPES = [
  */
 function cloneRepo(tempDir) {
   console.log('Cloning PowerPlatformConnectors repository...');
-  execSync(`git clone --depth 1 --branch ${BRANCH} ${REPO_URL} ${tempDir}`, {
+  execSync(`git clone --filter=blob:none --branch ${BRANCH} ${REPO_URL} ${tempDir}`, {
     stdio: 'inherit'
   });
   console.log('Repository cloned successfully.');
+}
+
+/**
+ * Extract first-added and last-updated dates for each connector from git history
+ * Returns a Map keyed by connector directory path (e.g. "certified-connectors/Salesforce")
+ */
+function getConnectorDates(tempDir) {
+  console.log('Extracting connector dates from git history...');
+  const gitLog = execSync(
+    'git log --format="COMMIT %aI" --name-only --diff-filter=ACMR',
+    { cwd: tempDir, encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 }
+  );
+
+  const dateMap = new Map();
+  let currentDate = null;
+
+  for (const line of gitLog.split('\n')) {
+    if (line.startsWith('COMMIT ')) {
+      currentDate = line.slice(7).trim();
+    } else if (line.trim() && currentDate) {
+      const parts = line.trim().split('/');
+      if (parts.length >= 2) {
+        const connectorDir = `${parts[0]}/${parts[1]}`;
+        const existing = dateMap.get(connectorDir);
+        if (!existing) {
+          dateMap.set(connectorDir, { firstDate: currentDate, lastDate: currentDate });
+        } else {
+          // git log outputs newest commits first, so currentDate gets older over time
+          existing.firstDate = currentDate;
+        }
+      }
+    }
+  }
+
+  console.log(`Extracted dates for ${dateMap.size} connector directories.`);
+  return dateMap;
 }
 
 /**
@@ -55,7 +91,7 @@ function getMetadataValue(metadata, propertyName) {
 /**
  * Process a single connector directory
  */
-function processConnector(connectorPath, connectorId, type) {
+function processConnector(connectorPath, connectorId, type, dateMap) {
   const swaggerPath = path.join(connectorPath, 'apiDefinition.swagger.json');
   const propertiesPath = path.join(connectorPath, 'apiProperties.json');
 
@@ -120,6 +156,11 @@ function processConnector(connectorPath, connectorId, type) {
     }
   }
 
+  // Look up dates from the date map
+  const typeDir = CONNECTOR_TYPES.find(t => t.type === type)?.dir;
+  const dateKey = typeDir ? `${typeDir}/${connectorId}` : null;
+  const dates = dateKey ? dateMap.get(dateKey) : null;
+
   return {
     id: connectorId,
     displayName,
@@ -135,14 +176,16 @@ function processConnector(connectorPath, connectorId, type) {
     categories,
     website,
     contactUrl,
-    contactName
+    contactName,
+    firstCommitDate: dates?.firstDate ?? null,
+    lastCommitDate: dates?.lastDate ?? null
   };
 }
 
 /**
  * Scan all connector directories
  */
-function scanConnectors(tempDir) {
+function scanConnectors(tempDir, dateMap) {
   const connectors = [];
 
   for (const { dir, type } of CONNECTOR_TYPES) {
@@ -159,7 +202,7 @@ function scanConnectors(tempDir) {
     for (const entry of entries) {
       if (entry.isDirectory()) {
         const connectorPath = path.join(connectorDir, entry.name);
-        const connector = processConnector(connectorPath, entry.name, type);
+        const connector = processConnector(connectorPath, entry.name, type, dateMap);
         if (connector) {
           connectors.push(connector);
         }
@@ -205,6 +248,15 @@ function generateStats(connectors) {
     stats.byAuthType[connector.authType] = (stats.byAuthType[connector.authType] || 0) + 1;
   }
 
+  // Count recently updated and recently added (within last 90 days)
+  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+  stats.recentlyUpdated = connectors.filter(
+    c => c.lastCommitDate && c.lastCommitDate >= ninetyDaysAgo
+  ).length;
+  stats.recentlyAdded = connectors.filter(
+    c => c.firstCommitDate && c.firstCommitDate >= ninetyDaysAgo
+  ).length;
+
   return stats;
 }
 
@@ -232,8 +284,11 @@ async function main() {
     // Clone repository
     cloneRepo(tempDir);
 
+    // Extract connector dates from git history
+    const dateMap = getConnectorDates(tempDir);
+
     // Scan and process connectors
-    const connectors = scanConnectors(tempDir);
+    const connectors = scanConnectors(tempDir, dateMap);
     console.log(`\nTotal connectors processed: ${connectors.length}`);
 
     // Generate statistics
