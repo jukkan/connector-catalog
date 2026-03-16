@@ -1,4 +1,5 @@
 import type { Connector } from '../types';
+import { getUpdateFreshness, formatRelativeDate } from '../utils/connectorUtils';
 
 interface ConnectorCardProps {
   connector: Connector;
@@ -39,14 +40,21 @@ export default function ConnectorCard({ connector, onClick }: ConnectorCardProps
     }
   };
 
+  const freshness = connector.lastCommitDate ? getUpdateFreshness(connector.lastCommitDate) : null;
+
   return (
     <div
-      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all cursor-pointer relative overflow-hidden"
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
+      {/* Freshness indicator bar */}
+      {freshness && (
+        <div className={`absolute top-0 left-0 right-0 h-0.5 ${freshness.color}`} title={freshness.label} />
+      )}
+
       {/* Header row: brand circle + displayName */}
       <div className="flex items-center gap-3 mb-2">
         <div
@@ -70,13 +78,20 @@ export default function ConnectorCard({ connector, onClick }: ConnectorCardProps
         {connector.description}
       </p>
 
-      {/* Footer: operations + type badge */}
+      {/* Footer: operations + updated date + type badge */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-          {connector.hasTriggers && (
-            <span className="text-base">⚡</span>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-1">
+            {connector.hasTriggers && (
+              <span className="text-base">⚡</span>
+            )}
+            <span>{connector.operationCount} operation{connector.operationCount !== 1 ? 's' : ''}</span>
+          </div>
+          {connector.lastCommitDate && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              · Updated {formatRelativeDate(connector.lastCommitDate)}
+            </span>
           )}
-          <span>{connector.operationCount} operation{connector.operationCount !== 1 ? 's' : ''}</span>
         </div>
         <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeColor(connector.type)}`}>
           {getTypeBadgeLabel(connector.type)}

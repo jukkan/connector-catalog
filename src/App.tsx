@@ -7,6 +7,7 @@ import ConnectorDetailModal from './components/ConnectorDetailModal';
 import Footer from './components/Footer';
 import connectorsData from './data/connectors.json';
 import statsData from './data/stats.json';
+import { sortConnectors } from './utils/connectorUtils';
 import type { Connector, Stats, SortOption } from './types';
 
 const connectors = connectorsData as Connector[];
@@ -25,7 +26,7 @@ function App() {
   const getInitialState = () => {
     const params = new URLSearchParams(window.location.search);
     const sortParam = params.get('sort') as SortOption | null;
-    const validSorts: SortOption[] = ['name-asc', 'name-desc', 'operations-desc', 'publisher-asc'];
+    const validSorts: SortOption[] = ['name-asc', 'name-desc', 'updated', 'added', 'operations-desc', 'publisher-asc'];
     return {
       search: params.get('q') || '',
       types: params.get('type')?.split(',').filter(Boolean) || [],
@@ -143,21 +144,8 @@ function App() {
       return true;
     });
 
-    // Sort
-    return [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case 'name-asc':
-          return a.displayName.localeCompare(b.displayName);
-        case 'name-desc':
-          return b.displayName.localeCompare(a.displayName);
-        case 'operations-desc':
-          return b.operationCount - a.operationCount;
-        case 'publisher-asc':
-          return a.publisher.localeCompare(b.publisher);
-        default:
-          return a.displayName.localeCompare(b.displayName);
-      }
-    });
+    // Sort using utility function
+    return sortConnectors(filtered, sortBy);
   }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy]);
 
   return (
