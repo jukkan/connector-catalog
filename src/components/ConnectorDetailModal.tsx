@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { Connector } from '../types';
+import { formatFullDate, formatRelativeDate } from '../utils/connectorUtils';
 
 interface ConnectorDetailModalProps {
   connector: Connector;
@@ -181,6 +182,27 @@ export default function ConnectorDetailModal({ connector, onClose }: ConnectorDe
               </p>
             </div>
           </div>
+
+          {/* Timeline */}
+          {(connector.firstCommitDate || connector.lastCommitDate) && (
+            <div>
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Timeline</span>
+              <div className="mt-1 space-y-1">
+                {connector.firstCommitDate && (
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
+                    <span className="text-gray-500 dark:text-gray-400">First published:</span>{' '}
+                    {formatFullDate(connector.firstCommitDate)} ({formatRelativeDate(connector.firstCommitDate)})
+                  </p>
+                )}
+                {connector.lastCommitDate && (
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
+                    <span className="text-gray-500 dark:text-gray-400">Last updated:</span>{' '}
+                    {formatFullDate(connector.lastCommitDate)} ({formatRelativeDate(connector.lastCommitDate)})
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Categories */}
           {categories.length > 0 && (
