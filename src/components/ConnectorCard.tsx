@@ -52,7 +52,7 @@ export default function ConnectorCard({ connector, onClick }: ConnectorCardProps
     >
       {/* Freshness indicator bar */}
       {freshness && (
-        <div className={`absolute top-0 left-0 right-0 h-0.5 ${freshness.color}`} title={freshness.label} />
+        <div className={`absolute top-0 left-0 right-0 h-0.5 ${freshness.color}`} aria-hidden="true" />
       )}
 
       {/* Header row: brand circle + displayName */}
