@@ -6,12 +6,10 @@ import StatsBar from './components/StatsBar';
 import ConnectorDetailModal from './components/ConnectorDetailModal';
 import Footer from './components/Footer';
 import connectorsData from './data/connectors.json';
-import statsData from './data/stats.json';
 import { sortConnectors } from './utils/connectorUtils';
-import type { Connector, Stats, SortOption } from './types';
+import type { Connector, SortOption } from './types';
 
 const connectors = connectorsData as Connector[];
-const stats = statsData as Stats;
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -148,6 +146,63 @@ function App() {
     return sortConnectors(filtered, sortBy);
   }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy]);
 
+  // Compute stats from the full (unfiltered) connector set
+  const statValues = useMemo(() => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+    let updatedThisMonth = 0;
+    let newConnectors = 0;
+    let withTriggers = 0;
+
+    for (const c of connectors) {
+      if (c.lastCommitDate && new Date(c.lastCommitDate) >= thirtyDaysAgo) {
+        updatedThisMonth++;
+      }
+      if (c.firstCommitDate && new Date(c.firstCommitDate) >= ninetyDaysAgo) {
+        newConnectors++;
+      }
+      if (c.hasTriggers) {
+        withTriggers++;
+      }
+    }
+
+    return { updatedThisMonth, newConnectors, withTriggers };
+  }, []);
+
+  const handleStatClick = (action: 'all' | 'updated' | 'new' | 'triggers') => {
+    switch (action) {
+      case 'all':
+        setSearch('');
+        setSelectedTypes([]);
+        setSelectedAuthTypes([]);
+        setHasTriggers(null);
+        setSelectedCategories([]);
+        setSortBy('name-asc');
+        break;
+      case 'updated':
+        setSearch('');
+        setSelectedTypes([]);
+        setSelectedAuthTypes([]);
+        setHasTriggers(null);
+        setSelectedCategories([]);
+        setSortBy('updated');
+        break;
+      case 'new':
+        setSearch('');
+        setSelectedTypes([]);
+        setSelectedAuthTypes([]);
+        setHasTriggers(null);
+        setSelectedCategories([]);
+        setSortBy('added');
+        break;
+      case 'triggers':
+        setHasTriggers(true);
+        break;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
@@ -180,7 +235,13 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
         {/* Stats Bar */}
-        <StatsBar stats={stats} />
+        <StatsBar
+          totalConnectors={connectors.length}
+          updatedThisMonth={statValues.updatedThisMonth}
+          newConnectors={statValues.newConnectors}
+          withTriggers={statValues.withTriggers}
+          onStatClick={handleStatClick}
+        />
 
         {/* Filters */}
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
