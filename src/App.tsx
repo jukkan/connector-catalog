@@ -4,9 +4,10 @@ import FilterBar from './components/FilterBar';
 import CatalogGrid from './components/CatalogGrid';
 import StatsBar from './components/StatsBar';
 import ConnectorDetailModal from './components/ConnectorDetailModal';
+import Footer from './components/Footer';
 import connectorsData from './data/connectors.json';
 import statsData from './data/stats.json';
-import type { Connector, Stats } from './types';
+import type { Connector, Stats, SortOption } from './types';
 
 const connectors = connectorsData as Connector[];
 const stats = statsData as Stats;
@@ -23,12 +24,16 @@ function App() {
   // Initialize state from URL params
   const getInitialState = () => {
     const params = new URLSearchParams(window.location.search);
+    const sortParam = params.get('sort') as SortOption | null;
+    const validSorts: SortOption[] = ['name-asc', 'name-desc', 'operations-desc', 'publisher-asc'];
     return {
       search: params.get('q') || '',
       types: params.get('type')?.split(',').filter(Boolean) || [],
       authTypes: params.get('auth')?.split(',').filter(Boolean) || [],
       hasTriggers: params.get('triggers') === 'true' ? true : params.get('triggers') === 'false' ? false : null,
       categories: params.get('category')?.split(',').filter(Boolean) || [],
+      sort: (sortParam && validSorts.includes(sortParam) ? sortParam : 'name-asc') as SortOption,
+      connectorId: params.get('connector') || null,
     };
   };
 
@@ -37,7 +42,14 @@ function App() {
   const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(getInitialState().authTypes);
   const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
-  const [selectedConnector, setSelectedConnector] = useState<Connector | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>(getInitialState().sort);
+  const [selectedConnector, setSelectedConnector] = useState<Connector | null>(() => {
+    const { connectorId } = getInitialState();
+    if (connectorId) {
+      return (connectorsData as Connector[]).find(c => c.id === connectorId) ?? null;
+    }
+    return null;
+  });
 
   // Update URL when filters change
   useEffect(() => {
@@ -47,10 +59,12 @@ function App() {
     if (selectedAuthTypes.length > 0) params.set('auth', selectedAuthTypes.join(','));
     if (hasTriggers !== null) params.set('triggers', String(hasTriggers));
     if (selectedCategories.length > 0) params.set('category', selectedCategories.join(','));
+    if (sortBy !== 'name-asc') params.set('sort', sortBy);
+    if (selectedConnector) params.set('connector', selectedConnector.id);
 
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
     window.history.replaceState({}, '', newUrl);
-  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories]);
+  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy, selectedConnector]);
 
   // Update dark mode class
   useEffect(() => {
@@ -87,9 +101,9 @@ function App() {
     ];
   }, []);
 
-  // Filter connectors
+  // Filter and sort connectors
   const filteredConnectors = useMemo(() => {
-    return connectors.filter(connector => {
+    const filtered = connectors.filter(connector => {
       // Search filter
       if (search) {
         const searchLower = search.toLowerCase();
@@ -128,7 +142,23 @@ function App() {
 
       return true;
     });
-  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories]);
+
+    // Sort
+    return [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case 'name-asc':
+          return a.displayName.localeCompare(b.displayName);
+        case 'name-desc':
+          return b.displayName.localeCompare(a.displayName);
+        case 'operations-desc':
+          return b.operationCount - a.operationCount;
+        case 'publisher-asc':
+          return a.publisher.localeCompare(b.publisher);
+        default:
+          return a.displayName.localeCompare(b.displayName);
+      }
+    });
+  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -183,9 +213,14 @@ function App() {
         <CatalogGrid
           connectors={filteredConnectors}
           totalCount={connectors.length}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
           onConnectorClick={setSelectedConnector}
         />
       </main>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Connector Detail Modal */}
       {selectedConnector && (

@@ -33,10 +33,13 @@ export interface Stats {
   timestamp: string;
 }
 
+export type SortOption = 'name-asc' | 'name-desc' | 'operations-desc' | 'publisher-asc';
+
 export interface FilterState {
   search: string;
   types: string[];
   authTypes: string[];
   hasTriggers: boolean | null;
   categories: string[];
+  sort: SortOption;
 }
