@@ -28,6 +28,12 @@ jobs:
       - name: Fetch connector data
         run: npm run fetch-data
 
+      - name: Run tests
+        run: npm test
+
+      - name: Verify build
+        run: npm run build
+
       - name: Check for data changes
         id: changes
         run: |
