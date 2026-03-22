@@ -1,17 +1,17 @@
 {
-  "total": 1117,
+  "total": 1118,
   "byType": {
-    "certified": 652,
+    "certified": 653,
     "independent": 442,
     "custom": 23
   },
   "byCategory": {
     "IT Operations": 104,
     "Website": 87,
-    "Productivity": 274,
+    "Productivity": 275,
     "Business Management": 88,
     "AI": 111,
-    "Content and Files": 111,
+    "Content and Files": 112,
     "Marketing": 53,
     "Data": 259,
     "Collaboration": 86,
@@ -31,12 +31,12 @@
   },
   "byAuthType": {
     "apiKey": 586,
-    "none": 212,
+    "none": 213,
     "oauth2": 239,
     "basic": 80
   },
-  "timestamp": "2026-03-16T10:09:42.363Z",
-  "recentlyUpdated": 30,
+  "timestamp": "2026-03-22T02:25:17.000Z",
+  "recentlyUpdated": 28,
   "recentlyAdded": 12,
   "byCapability": {
     "actions": 134,
@@ -44,5 +44,5 @@
     "gateway": 2,
     "cloud only": 1
   },
-  "withPrivacyPolicy": 1056
+  "withPrivacyPolicy": 1057
 }
