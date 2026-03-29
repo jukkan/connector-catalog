@@ -1800,7 +1800,7 @@
     "contactUrl": "https://support.boldsign.com",
     "contactName": "BoldSign Support",
     "firstCommitDate": "2024-05-15T19:05:13+05:30",
-    "lastCommitDate": "2024-05-21T21:53:21+05:30",
+    "lastCommitDate": "2026-03-26T18:04:38+05:30",
     "apiVersion": "1.0",
     "privacyPolicy": "https://boldsign.com/privacy-policy/",
     "capabilities": []
@@ -3688,6 +3688,28 @@
       "actions",
       "triggers"
     ]
+  },
+  {
+    "id": "DocuSignCopilotMCP",
+    "displayName": "Docusign MCP Demo",
+    "description": "Simplify contract management with intelligent automation powered by Docusign. Go beyond simple execution to make complex agreement workflows effortless. Use natural language to connect with your agreement data, instantly surface insights like renewal dates and key obligations, and create automated workflows that keep your business moving faster and with less friction.",
+    "publisher": "DocuSign, Inc.",
+    "type": "certified",
+    "brandColor": "#FFFFFF",
+    "authType": "none",
+    "operationCount": 1,
+    "actionCount": 1,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Content and Files;Productivity",
+    "website": "https://www.docusign.com",
+    "contactUrl": "https://support.docusign.com",
+    "contactName": "docusign",
+    "firstCommitDate": "2026-03-27T08:33:21-05:00",
+    "lastCommitDate": "2026-03-27T08:33:21-05:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://www.docusign.com/company/privacy-policy",
+    "capabilities": []
   },
   {
     "id": "DocuSignCopilotMCPDemo",
@@ -8654,8 +8676,8 @@
     "contactUrl": "https://pdfcrowd.com/contact/",
     "contactName": "PDFCrowd Support",
     "firstCommitDate": "2026-02-12T14:42:27+01:00",
-    "lastCommitDate": "2026-02-25T16:49:35+01:00",
-    "apiVersion": "1.0.0",
+    "lastCommitDate": "2026-03-23T12:50:15+01:00",
+    "apiVersion": "1.1.0",
     "privacyPolicy": "https://pdfcrowd.com/privacy/",
     "capabilities": []
   },
@@ -11418,7 +11440,7 @@
     "contactUrl": "https://developer.survalyzer.com/",
     "contactName": "Survalyzer Developer Center",
     "firstCommitDate": "2023-03-17T17:07:49+01:00",
-    "lastCommitDate": "2023-04-11T19:44:01+02:00",
+    "lastCommitDate": "2026-03-26T14:24:55+01:00",
     "apiVersion": "v3.0",
     "privacyPolicy": "https://survalyzer.com/privacy-policy",
     "capabilities": [
@@ -11442,7 +11464,7 @@
     "contactUrl": "https://developer.survalyzer.com/",
     "contactName": "Survalyzer Developer Center",
     "firstCommitDate": "2023-03-17T16:50:30+01:00",
-    "lastCommitDate": "2023-04-11T19:43:06+02:00",
+    "lastCommitDate": "2026-03-26T14:29:17+01:00",
     "apiVersion": "v3.0",
     "privacyPolicy": "https://survalyzer.com/privacy-policy",
     "capabilities": [
