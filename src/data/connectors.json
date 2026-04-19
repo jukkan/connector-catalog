@@ -5504,6 +5504,28 @@
     ]
   },
   {
+    "id": "Hivelight",
+    "displayName": "Hivelight",
+    "description": "Hivelight is a legal practice management platform that helps teams organise work and collaborate efficiently. Use this connector to create, update, and manage matters, tasks, workflows, users, and workspaces within Hivelight, enabling automated legal operations and streamlined processes.",
+    "publisher": "Hivelight",
+    "type": "certified",
+    "brandColor": "#6C5CE7",
+    "authType": "apiKey",
+    "operationCount": 28,
+    "actionCount": 23,
+    "triggerCount": 5,
+    "hasTriggers": true,
+    "categories": "Business Management;Productivity",
+    "website": "https://www.hivelight.com",
+    "contactUrl": "https://docs.hivelight.com",
+    "contactName": "Hivelight Support",
+    "firstCommitDate": "2026-04-14T03:44:46+12:00",
+    "lastCommitDate": "2026-04-14T03:44:46+12:00",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://www.hivelight.com/privacy",
+    "capabilities": []
+  },
+  {
     "id": "HoneywellForge",
     "displayName": "Honeywell Forge",
     "description": "Honeywell Forge is an Enterprise Performance Management Software-as-a-Service. It enables autonomous control of devices and codifies domain knowledge of assets in a contextual way. Use Honeywell Forge Connector to subscribe to Honeywell Forge to receive service cases and to close existing service cases.",
