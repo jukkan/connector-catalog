@@ -423,6 +423,28 @@
     "capabilities": []
   },
   {
+    "id": "Akeyless Secrets Manager",
+    "displayName": "Akeyless Secrets Manager",
+    "description": "Akeyless connector for api.akeyless.io: list and describe vault items, read secret values, and administer roles, gateways, targets, and authentication methods. Supports optional writes to create or update secrets and move objects per your account RBAC. Connection uses HTTP Basic with Akeyless API Key Access ID and Access Key. See readme.md for credential setup and API references.",
+    "publisher": "Akeyless",
+    "type": "certified",
+    "brandColor": "#0E4D45",
+    "authType": "basic",
+    "operationCount": 19,
+    "actionCount": 19,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Security;IT Operations",
+    "website": "https://www.akeyless.io/",
+    "contactUrl": "https://www.akeyless.io/",
+    "contactName": "Akeyless",
+    "firstCommitDate": "2026-04-24T12:33:20+03:00",
+    "lastCommitDate": "2026-04-24T12:33:20+03:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://www.akeyless.io/privacy-policy",
+    "capabilities": []
+  },
+  {
     "id": "Alemba ITSM",
     "displayName": "Alemba ITSM",
     "description": "Alemba Service Manager enhances your service delivery by streamlining your IT and Enterprise Service Management Processes. Create, read and update all ASM records including Incidents, Requests, Knowledge Articles and CMDB Items.",
@@ -14816,6 +14838,30 @@
     "capabilities": []
   },
   {
+    "id": "ABN Lookup",
+    "displayName": "ABN Lookup",
+    "description": "Search the Australian Business Register to find companies and their business status.",
+    "publisher": "Joao Lopes",
+    "type": "independent",
+    "brandColor": "#da3b01",
+    "authType": "apiKey",
+    "operationCount": 3,
+    "actionCount": 3,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Business Management",
+    "website": "https://abr.business.gov.au/",
+    "contactUrl": "https://sp365.pro/support",
+    "contactName": "Joao Lopes",
+    "firstCommitDate": "2026-04-21T17:32:39+10:00",
+    "lastCommitDate": "2026-04-21T17:32:39+10:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://abr.business.gov.au/Tools/WebServicesAgreement",
+    "capabilities": [
+      "actions"
+    ]
+  },
+  {
     "id": "AI or Not",
     "displayName": "AI or Not",
     "description": "Detect AI-generated images & audio for your business - and yourself - with AI or Not.",
@@ -16819,6 +16865,28 @@
     "lastCommitDate": "2023-12-01T00:30:29-05:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://deepgram.com/privacy",
+    "capabilities": []
+  },
+  {
+    "id": "Deliverea",
+    "displayName": "Deliverea",
+    "description": "Allows users to connect to Deliverea API.",
+    "publisher": "Unknown",
+    "type": "independent",
+    "brandColor": null,
+    "authType": "apiKey",
+    "operationCount": 5,
+    "actionCount": 5,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Data;Productivity",
+    "website": "https://www.deliverea.com",
+    "contactUrl": "https://www.ifr.es",
+    "contactName": "IFR",
+    "firstCommitDate": "2026-04-21T11:42:23+02:00",
+    "lastCommitDate": "2026-04-21T11:42:23+02:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://www.deliverea.com/en/privacy-policy",
     "capabilities": []
   },
   {
