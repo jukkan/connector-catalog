@@ -3750,7 +3750,7 @@
     "contactUrl": "https://support.docusign.com",
     "contactName": "docusign",
     "firstCommitDate": "2026-03-27T08:33:21-05:00",
-    "lastCommitDate": "2026-03-27T08:33:21-05:00",
+    "lastCommitDate": "2026-05-15T10:31:30-05:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.docusign.com/company/privacy-policy",
     "capabilities": []
@@ -3785,16 +3785,16 @@
     "type": "certified",
     "brandColor": "#FFFFFF",
     "authType": "none",
-    "operationCount": 88,
-    "actionCount": 84,
-    "triggerCount": 4,
+    "operationCount": 96,
+    "actionCount": 90,
+    "triggerCount": 6,
     "hasTriggers": true,
     "categories": "Content and Files;Productivity",
     "website": "https://www.docusign.com",
     "contactUrl": "https://support.docusign.com",
     "contactName": "docusign",
     "firstCommitDate": "2021-10-18T13:50:41-07:00",
-    "lastCommitDate": "2025-09-12T00:09:22-07:00",
+    "lastCommitDate": "2026-05-15T07:30:16-07:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.docusign.com/company/privacy-policy",
     "capabilities": [
@@ -10452,6 +10452,30 @@
     "capabilities": []
   },
   {
+    "id": "SOCRadar",
+    "displayName": "SOCRadar Threat Intelligence",
+    "description": "Real-time threat intelligence enrichment, dark web leak monitoring and IOC feeds from SOCRadar Extended Threat Intelligence (XTI) platform.",
+    "publisher": "SOCRadar",
+    "type": "certified",
+    "brandColor": "#1A1F36",
+    "authType": "apiKey",
+    "operationCount": 6,
+    "actionCount": 6,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Security;IT Operations",
+    "website": "https://socradar.io",
+    "contactUrl": "https://socradar.io/support",
+    "contactName": "SOCRadar Support",
+    "firstCommitDate": "2026-05-11T15:44:46+03:00",
+    "lastCommitDate": "2026-05-11T15:44:46+03:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://socradar.io/privacy-policy",
+    "capabilities": [
+      "actions"
+    ]
+  },
+  {
     "id": "SchoolDigger",
     "displayName": "SchoolDigger",
     "description": "Get detailed data on over 120,000 schools and 18,500 districts in the United States. Get your appID and apiKey at https://developer.schooldigger.com/",
@@ -11239,6 +11263,31 @@
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.smartglobalgovernance.com/fr/politique-confidentialite",
     "capabilities": []
+  },
+  {
+    "id": "Snapforms",
+    "displayName": "Snapforms",
+    "description": "Create and share online forms to improve processes and collect accurate data with ease. Build custom workflows and connect form responses with your own systems.",
+    "publisher": "Snapforms",
+    "type": "certified",
+    "brandColor": "#0f82df",
+    "authType": "oauth2",
+    "operationCount": 6,
+    "actionCount": 5,
+    "triggerCount": 1,
+    "hasTriggers": true,
+    "categories": "Data;Productivity",
+    "website": "https://snapforms.com.au/",
+    "contactUrl": "https://snapforms.com.au/contact-us/",
+    "contactName": "Snapforms Support",
+    "firstCommitDate": "2026-05-12T01:25:57+12:00",
+    "lastCommitDate": "2026-05-12T01:25:57+12:00",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://snapforms.com.au/privacy-policy/",
+    "capabilities": [
+      "actions",
+      "triggers"
+    ]
   },
   {
     "id": "Snowflake v2 Archive",
