@@ -1,7 +1,7 @@
 {
-  "total": 1135,
+  "total": 1136,
   "byType": {
-    "certified": 663,
+    "certified": 664,
     "independent": 448,
     "custom": 24
   },
@@ -16,7 +16,7 @@
     "Data": 265,
     "Collaboration": 86,
     "Communication": 106,
-    "Finance": 43,
+    "Finance": 44,
     "Security": 41,
     "Sales and CRM": 93,
     "Internet of Things": 17,
@@ -30,19 +30,19 @@
     "collaboration": 1
   },
   "byAuthType": {
-    "apiKey": 597,
+    "apiKey": 598,
     "none": 216,
     "oauth2": 241,
     "basic": 81
   },
-  "timestamp": "2026-05-24T03:41:20.554Z",
+  "timestamp": "2026-05-31T03:57:24.327Z",
   "recentlyUpdated": 40,
-  "recentlyAdded": 20,
+  "recentlyAdded": 19,
   "byCapability": {
     "actions": 138,
     "triggers": 38,
     "gateway": 2,
     "cloud only": 1
   },
-  "withPrivacyPolicy": 1074
+  "withPrivacyPolicy": 1075
 }
