@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test *)",
+      "Bash(git *)",
+      "Bash(gh auth *)",
+      "Bash(gh --version)",
+      "Bash(cat)",
+      "Bash(IMPECCABLE_CRITIQUE_META='{\"target\":\"connector catalog\",\"total_score\":25,\"p0_count\":0,\"p1_count\":2}' node /home/jukka/.claude/plugins/cache/impeccable/impeccable/3.6.0/skills/impeccable/scripts/critique-storage.mjs write connector-catalog /tmp/impeccable-critique-body.md)",
+      "Bash(rm /tmp/impeccable-critique-body.md)",
+      "Bash(node /home/jukka/.claire/plugins/cache/impeccable/impeccable/3.6.0/skills/impeccable/scripts/critique-storage.mjs trend connector-catalog 5)",
+      "Bash(node /home/jukka/.claude/plugins/cache/impeccable/impeccable/3.6.0/skills/impeccable/scripts/critique-storage.mjs trend connector-catalog 5)"
+    ]
+  }
+}
