@@ -6,6 +6,8 @@ interface StatsBarProps {
   newConnectors: number;
   withTriggers: number;
   onStatClick: (action: StatAction) => void;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 interface StatCard {
@@ -22,6 +24,8 @@ export default function StatsBar({
   newConnectors,
   withTriggers,
   onStatClick,
+  collapsed,
+  onToggleCollapse,
 }: StatsBarProps) {
   const handleKeyDown = (action: StatAction) => (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -78,27 +82,61 @@ export default function StatsBar({
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-      {cards.map(({ action, count, label, accent, icon }) => (
-        <div
-          key={action}
-          role="button"
-          tabIndex={0}
-          onClick={() => onStatClick(action)}
-          onKeyDown={handleKeyDown(action)}
-          className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-            rounded-lg p-4 border-l-4 ${accent} cursor-pointer
-            hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-750 transition-all`}
+    <section className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+      <div className="flex items-center justify-between gap-4 p-4">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            Catalog summary
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Quick shortcuts for popular connector views.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onToggleCollapse}
+          aria-expanded={!collapsed}
+          aria-controls="stats-grid"
+          className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <div className="flex items-center gap-2 mb-2">
-            {icon}
-            <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
-          </div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            {count.toLocaleString()}
+          {collapsed ? 'Show cards' : 'Hide cards'}
+          <svg
+            className={`w-4 h-4 transition-transform ${collapsed ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+
+      {!collapsed && (
+        <div id="stats-grid" className="px-4 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {cards.map(({ action, count, label, accent, icon }) => (
+              <div
+                key={action}
+                role="button"
+                tabIndex={0}
+                onClick={() => onStatClick(action)}
+                onKeyDown={handleKeyDown(action)}
+                className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700
+                  rounded-lg p-4 border-l-4 ${accent} cursor-pointer
+                  hover:shadow-md hover:bg-white dark:hover:bg-gray-700 transition-all`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  {icon}
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
+                </div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                  {count.toLocaleString()}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
+      )}
+    </section>
   );
 }

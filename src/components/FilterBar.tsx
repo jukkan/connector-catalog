@@ -82,74 +82,83 @@ export default function FilterBar({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       {/* Type Filters */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Type:</span>
-        <FilterChip
-          label="Certified"
-          active={selectedTypes.includes('certified')}
-          onClick={() => toggleType('certified')}
-        />
-        <FilterChip
-          label="Independent"
-          active={selectedTypes.includes('independent')}
-          onClick={() => toggleType('independent')}
-        />
-        <FilterChip
-          label="Custom"
-          active={selectedTypes.includes('custom')}
-          onClick={() => toggleType('custom')}
-        />
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Type</h3>
+        <div className="flex flex-wrap gap-2">
+          <FilterChip
+            label="Certified"
+            active={selectedTypes.includes('certified')}
+            onClick={() => toggleType('certified')}
+          />
+          <FilterChip
+            label="Independent"
+            active={selectedTypes.includes('independent')}
+            onClick={() => toggleType('independent')}
+          />
+          <FilterChip
+            label="Custom"
+            active={selectedTypes.includes('custom')}
+            onClick={() => toggleType('custom')}
+          />
+        </div>
       </div>
 
       {/* Auth Type Filters */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Auth:</span>
-        <FilterChip
-          label="OAuth2"
-          active={selectedAuthTypes.includes('oauth2')}
-          onClick={() => toggleAuthType('oauth2')}
-        />
-        <FilterChip
-          label="API Key"
-          active={selectedAuthTypes.includes('apiKey')}
-          onClick={() => toggleAuthType('apiKey')}
-        />
-        <FilterChip
-          label="Basic"
-          active={selectedAuthTypes.includes('basic')}
-          onClick={() => toggleAuthType('basic')}
-        />
-        <FilterChip
-          label="None"
-          active={selectedAuthTypes.includes('none')}
-          onClick={() => toggleAuthType('none')}
-        />
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Auth</h3>
+        <div className="flex flex-wrap gap-2">
+          <FilterChip
+            label="OAuth2"
+            active={selectedAuthTypes.includes('oauth2')}
+            onClick={() => toggleAuthType('oauth2')}
+          />
+          <FilterChip
+            label="API Key"
+            active={selectedAuthTypes.includes('apiKey')}
+            onClick={() => toggleAuthType('apiKey')}
+          />
+          <FilterChip
+            label="Basic"
+            active={selectedAuthTypes.includes('basic')}
+            onClick={() => toggleAuthType('basic')}
+          />
+          <FilterChip
+            label="None"
+            active={selectedAuthTypes.includes('none')}
+            onClick={() => toggleAuthType('none')}
+          />
+        </div>
       </div>
 
       {/* Triggers Filter */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Triggers:</span>
-        <FilterChip
-          label="Yes"
-          active={hasTriggers === true}
-          onClick={() => onTriggersChange(hasTriggers === true ? null : true)}
-        />
-        <FilterChip
-          label="No"
-          active={hasTriggers === false}
-          onClick={() => onTriggersChange(hasTriggers === false ? null : false)}
-        />
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Triggers</h3>
+        <div className="flex flex-wrap gap-2">
+          <FilterChip
+            label="Yes"
+            active={hasTriggers === true}
+            onClick={() => onTriggersChange(hasTriggers === true ? null : true)}
+          />
+          <FilterChip
+            label="No"
+            active={hasTriggers === false}
+            onClick={() => onTriggersChange(hasTriggers === false ? null : false)}
+          />
+        </div>
       </div>
 
       {/* Categories Filter */}
       {allCategories.length > 0 && (
-        <div className="flex flex-wrap items-start gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 pt-1">Category:</span>
-          <div className="flex-1">
+        <div className="space-y-2">
+          <label htmlFor="category-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Category
+          </label>
+          <div>
             <select
-              className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="category-filter"
+              className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value=""
               onChange={(e) => {
                 if (e.target.value) {
@@ -182,7 +191,7 @@ export default function FilterBar({
 
       {/* Clear All Button */}
       {hasActiveFilters && (
-        <div className="pt-2">
+        <div className="pt-1">
           <button
             onClick={clearAllFilters}
             className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"

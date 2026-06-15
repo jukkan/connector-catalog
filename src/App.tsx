@@ -42,6 +42,7 @@ function App() {
   const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
   const [sortBy, setSortBy] = useState<SortOption>(getInitialState().sort);
+  const [statsCollapsed, setStatsCollapsed] = useState(false);
   const [selectedConnector, setSelectedConnector] = useState<Connector | null>(() => {
     const { connectorId } = getInitialState();
     if (connectorId) {
@@ -207,8 +208,8 @@ function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="max-w-screen-2xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
               Connector Catalog
             </h1>
@@ -228,44 +229,60 @@ function App() {
               )}
             </button>
           </div>
-          <SearchBar value={search} onChange={setSearch} />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        {/* Stats Bar */}
-        <StatsBar
-          totalConnectors={connectors.length}
-          updatedThisMonth={statValues.updatedThisMonth}
-          newConnectors={statValues.newConnectors}
-          withTriggers={statValues.withTriggers}
-          onStatClick={handleStatClick}
-        />
+      <main className="max-w-screen-2xl mx-auto px-4 py-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+          <div className="order-2 lg:order-1 min-w-0 space-y-6">
+            {/* Stats Bar */}
+            <StatsBar
+              totalConnectors={connectors.length}
+              updatedThisMonth={statValues.updatedThisMonth}
+              newConnectors={statValues.newConnectors}
+              withTriggers={statValues.withTriggers}
+              onStatClick={handleStatClick}
+              collapsed={statsCollapsed}
+              onToggleCollapse={() => setStatsCollapsed(current => !current)}
+            />
 
-        {/* Filters */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-          <FilterBar
-            selectedTypes={selectedTypes}
-            selectedAuthTypes={selectedAuthTypes}
-            hasTriggers={hasTriggers}
-            selectedCategories={selectedCategories}
-            allCategories={allCategories}
-            onTypeChange={setSelectedTypes}
-            onAuthTypeChange={setSelectedAuthTypes}
-            onTriggersChange={setHasTriggers}
-            onCategoryChange={setSelectedCategories}
-          />
+            {/* Connector Grid */}
+            <CatalogGrid
+              connectors={filteredConnectors}
+              totalCount={connectors.length}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              onConnectorClick={setSelectedConnector}
+            />
+          </div>
+
+          <aside className="order-1 lg:order-2 space-y-4 lg:sticky lg:top-6">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                Search
+              </h2>
+              <SearchBar value={search} onChange={setSearch} />
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Filters
+              </h2>
+              <FilterBar
+                selectedTypes={selectedTypes}
+                selectedAuthTypes={selectedAuthTypes}
+                hasTriggers={hasTriggers}
+                selectedCategories={selectedCategories}
+                allCategories={allCategories}
+                onTypeChange={setSelectedTypes}
+                onAuthTypeChange={setSelectedAuthTypes}
+                onTriggersChange={setHasTriggers}
+                onCategoryChange={setSelectedCategories}
+              />
+            </div>
+          </aside>
         </div>
-
-        {/* Connector Grid */}
-        <CatalogGrid
-          connectors={filteredConnectors}
-          totalCount={connectors.length}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          onConnectorClick={setSelectedConnector}
-        />
       </main>
 
       {/* Footer */}
