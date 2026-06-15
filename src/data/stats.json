@@ -7,14 +7,14 @@
   },
   "byCategory": {
     "IT Operations": 107,
-    "Website": 88,
+    "Website": 89,
     "Productivity": 281,
     "Business Management": 90,
     "AI": 114,
     "Content and Files": 116,
     "Marketing": 54,
     "Data": 266,
-    "Collaboration": 89,
+    "Collaboration": 90,
     "Communication": 106,
     "Finance": 44,
     "Security": 41,
@@ -23,11 +23,8 @@
     "Business Intelligence": 63,
     "Commerce": 33,
     "Human Resources": 26,
-    "website": 1,
-    "Social Media": 20,
-    "Social media": 1,
-    "Lifestyle and Entertainment": 73,
-    "collaboration": 1
+    "Social Media": 21,
+    "Lifestyle and Entertainment": 73
   },
   "byAuthType": {
     "apiKey": 599,
@@ -35,9 +32,9 @@
     "oauth2": 244,
     "basic": 81
   },
-  "timestamp": "2026-06-14T04:10:58.153Z",
-  "recentlyUpdated": 37,
-  "recentlyAdded": 22,
+  "timestamp": "2026-06-15T18:20:47.609Z",
+  "recentlyUpdated": 34,
+  "recentlyAdded": 21,
   "byCapability": {
     "actions": 139,
     "triggers": 38,
