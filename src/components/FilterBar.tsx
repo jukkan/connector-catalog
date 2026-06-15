@@ -1,3 +1,25 @@
+function InfoTip({ text }: { text: string }) {
+  return (
+    <span className="relative inline-block group align-middle ml-1">
+      <svg
+        className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 cursor-help"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span
+        role="tooltip"
+        className="pointer-events-none absolute left-0 bottom-full mb-2 z-10 w-56 rounded-md bg-gray-900 dark:bg-gray-700 px-2.5 py-1.5 text-xs leading-relaxed text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        {text}
+      </span>
+    </span>
+  );
+}
+
 interface FilterBarProps {
   selectedTypes: string[];
   selectedAuthTypes: string[];
@@ -66,26 +88,27 @@ export default function FilterBar({
     label: string;
     active: boolean;
     onClick: () => void;
-  }) => {
-    return (
-      <button
-        onClick={onClick}
-        className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-          active
-            ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-            : 'bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
-        }`}
-      >
-        {label}
-      </button>
-    );
-  };
+  }) => (
+    <button
+      onClick={onClick}
+      className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+        active
+          ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
+          : 'bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+      }`}
+    >
+      {label}
+    </button>
+  );
 
   return (
     <div className="space-y-5">
       {/* Type Filters */}
       <div className="space-y-2">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Type</h3>
+        <div className="flex items-center">
+          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Type</h3>
+          <InfoTip text="Independent Publisher connectors are all Premium tier and require a Power Platform Premium license to use." />
+        </div>
         <div className="flex flex-wrap gap-2">
           <FilterChip
             label="Certified"
@@ -134,15 +157,18 @@ export default function FilterBar({
 
       {/* Triggers Filter */}
       <div className="space-y-2">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Triggers</h3>
+        <div className="flex items-center">
+          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Triggers</h3>
+          <InfoTip text="Triggers respond to events in an external service (e.g. a new email, a form submission) and can start a Power Automate flow automatically." />
+        </div>
         <div className="flex flex-wrap gap-2">
           <FilterChip
-            label="Yes"
+            label="Has triggers"
             active={hasTriggers === true}
             onClick={() => onTriggersChange(hasTriggers === true ? null : true)}
           />
           <FilterChip
-            label="No"
+            label="Actions only"
             active={hasTriggers === false}
             onClick={() => onTriggersChange(hasTriggers === false ? null : false)}
           />
@@ -152,39 +178,16 @@ export default function FilterBar({
       {/* Categories Filter */}
       {allCategories.length > 0 && (
         <div className="space-y-2">
-          <label htmlFor="category-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Category
-          </label>
-          <div>
-            <select
-              id="category-filter"
-              className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value=""
-              onChange={(e) => {
-                if (e.target.value) {
-                  toggleCategory(e.target.value);
-                }
-              }}
-            >
-              <option value="">Select a category...</option>
-              {allCategories.map(category => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-            {selectedCategories.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedCategories.map(category => (
-                  <FilterChip
-                    key={category}
-                    label={category}
-                    active={true}
-                    onClick={() => toggleCategory(category)}
-                  />
-                ))}
-              </div>
-            )}
+          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</h3>
+          <div className="flex flex-wrap gap-2 max-h-44 overflow-y-auto pr-0.5">
+            {allCategories.map(category => (
+              <FilterChip
+                key={category}
+                label={category}
+                active={selectedCategories.includes(category)}
+                onClick={() => toggleCategory(category)}
+              />
+            ))}
           </div>
         </div>
       )}

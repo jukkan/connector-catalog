@@ -274,6 +274,9 @@ function App() {
               sortBy={sortBy}
               onSortChange={setSortBy}
               onConnectorClick={setSelectedConnector}
+              search={search}
+              hasActiveFilters={isFiltered}
+              onClearAll={() => handleStatClick('all')}
             />
           </div>
 

@@ -29,7 +29,7 @@ export default function StatsBar({
           {i > 0 && <span className="text-gray-300 dark:text-gray-600" aria-hidden="true">·</span>}
           <button
             onClick={() => onStatClick(action)}
-            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:underline transition-colors cursor-pointer"
           >
             {label}
           </button>
