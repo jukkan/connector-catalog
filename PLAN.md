@@ -21,7 +21,7 @@ This project builds a **fast, searchable, filterable, visually rich static site*
 
 1. **Instant client-side search** across name, description, publisher, category
 2. **Faceted filtering** — combine type, tier, auth method, category, trigger support
-3. **Visual brand discovery** — icon/color grid, featured brands section
+3. **Visual brand discovery** — icon/color grid, "What's New" activity strip
 4. **Deep links** — shareable URLs for filtered views and individual connectors
 5. **Operation-level detail** — see all actions/triggers from the OpenAPI spec
 6. **Auth type visibility** — immediately know OAuth, API key, etc.
@@ -241,13 +241,17 @@ All filter state is synced to URL search params:
 
 ### Phase 2 — Visual polish ✅
 
-- [x] Stats bar: 4 interactive clickable stat cards (total connectors, updated this month, new connectors, with triggers), numbers formatted with locale separators, collapsible
-- [x] Filter UX: inline pill chips with active state styling, "Clear all" button, category dropdown
+- [x] Stats bar: compact single-line text links (N connectors · N new · N updated this month · N with triggers), each clickable to apply matching filter/sort
+- [x] Filter UX: inline pill chips with active state styling, "Clear all" button; all filter sections (Type, Auth, Triggers, Category) use consistent chip components
+- [x] Category chip list scrollable at `max-h-44 overflow-y-auto` so the sidebar stays compact on short viewports
 - [x] Card styling: brandColor 40×40 circle, type badge (green/blue/gray), trigger indicator (⚡), 2-line description clamp, freshness indicator bar (top edge color)
 - [x] Grid: responsive 1/2/3 columns, max-width container, "Showing X of Y connectors" header
 - [x] Sort dropdown: Name A-Z, Name Z-A, Most Operations, Publisher A-Z, Recently Updated, Recently Added
 - [x] Dark mode toggle (sun/moon icon), persisted via `localStorage`, respects `prefers-color-scheme`
 - [x] URL param sync for all filters and sort
+- [x] InfoTip tooltips on "Type" (Premium licensing note) and "Triggers" (definition) section labels
+- [x] Trigger chip labels: "Has triggers" / "Actions only" (replaces "Yes" / "No")
+- [x] Empty state: shows search term, suggests broadening filters, and offers "Clear all filters" CTA
 
 ### Phase 3 — Connector detail ✅
 
@@ -268,7 +272,7 @@ All filter state is synced to URL search params:
 - [x] Deployed to custom domain `connectors.jukkan.com` via GitHub Pages
 - [x] `base: '/'` in Vite config for custom domain
 
-### Phase 5 — Recent activity hero (replaces featured brands)
+### Phase 5 — Recent activity hero (replaces featured brands) ✅
 
 Featured brands were dropped in favour of surfacing connector freshness — more useful and requires no curation.
 
@@ -276,11 +280,23 @@ Featured brands were dropped in favour of surfacing connector freshness — more
 - [x] Footer with attribution and repo link
 - [x] OpenGraph and Twitter Card meta tags for social sharing
 - [x] Favicon (SVG)
-- [ ] **Compact stats bar** — single line of clickable text links (N connectors · N new · N updated · N with triggers). Replaces the 4-card grid; frees vertical space for the activity strip.
-- [ ] **"What's New" strip** — two horizontally scrollable rows of compact mini-cards:
+- [x] **Compact stats bar** — single line of clickable text links (N connectors · N new · N updated · N with triggers). Replaced the 4-card grid; freed vertical space for the activity strip.
+- [x] **"What's New" strip** (`RecentConnectors.tsx`) — two horizontally scrollable rows of compact mini-cards:
   - *New connectors* — `firstCommitDate` within 90 days, sorted newest first, "View all →" applies `added` sort
   - *Recently updated* — `lastCommitDate` within 30 days and NOT new, sorted newest first, "View all →" applies `updated` sort
   - Strip is hidden when any filter (search, type, auth, triggers, category) is active, so it never competes with search results
+
+### Phase 5.1 — UX polish (remaining from design critique)
+
+Baseline design health score was 25/40 (June 2026). The P1 issues (empty state dead end, unexplained filter terms) and two P2 issues (category chip consistency, stats bar hover affordance) were fixed in Phase 5. Remaining items:
+
+- [ ] **Freshness bar visibility** — the 2px top-edge color bar on cards goes unnoticed. Options: increase to 4px, add a hover tooltip showing the last-updated date, or lean into the date already shown in the card footer instead of the bar.
+- [ ] **Cards as `<a>` elements** — connector cards are `<div>` with `onClick`; Cmd+click (new tab) doesn't work. Replace with `<a href="?connector={id}">` to give keyboard users and power users proper link behavior, while keeping the modal for primary navigation.
+- [ ] **Keyboard shortcut to focus search** — no way to jump to the search box without clicking. Add Cmd+K (Mac) / Ctrl+K (Windows) listener in `App.tsx` that calls `.focus()` on the search input ref.
+- [ ] **Dark mode contrast** — `dark:text-gray-400` on `dark:bg-gray-800` is approximately 4.1:1, borderline WCAG AA fail for body text. Bump secondary text to `dark:text-gray-300` (≈5.9:1) across cards and filter labels.
+- [ ] **Fix `buildMicrosoftLearnUrl`** — strips all non-alphanumeric characters, which may produce broken MS Learn URLs for connectors with hyphens or spaces in their ID. Should preserve hyphens and URL-encode remaining special chars.
+- [ ] **Clean up modal contact name** — the `contactName` field can render raw swagger strings (e.g. `"Name"`, `"Support"`, empty email addresses). Add a filter: only show if value looks like a real name (no `@`, no generic strings).
+- [ ] **Re-run `/impeccable critique`** after the above to measure score improvement from the 25/40 baseline.
 
 ### Phase 6 — Icons (enhancement, requires external data)
 
@@ -413,14 +429,15 @@ connector-catalog/
 │   └── fetch-data.mjs                 # Data pipeline: clone repo → parse → normalize → JSON
 ├── src/
 │   ├── components/
-│   │   ├── CatalogGrid.tsx            # Responsive grid with result count header
+│   │   ├── CatalogGrid.tsx            # Responsive grid with result count header and empty-state recovery
 │   │   ├── ConnectorCard.tsx          # Card with brandColor avatar, badges, freshness bar
 │   │   ├── ConnectorDetailModal.tsx   # Full detail modal with links and timeline
-│   │   ├── FilterBar.tsx              # Chip filters: type, auth, triggers, category
+│   │   ├── FilterBar.tsx              # Chip filters: type, auth, triggers, category; InfoTip tooltips
 │   │   ├── Footer.tsx                 # Attribution footer
+│   │   ├── RecentConnectors.tsx       # "What's New" hero strip: new + recently updated scrollable rows
 │   │   ├── SearchBar.tsx              # Debounced text search (300ms)
 │   │   ├── SortDropdown.tsx           # 6-option sort selector
-│   │   └── StatsBar.tsx               # 4 interactive stat cards, collapsible
+│   │   └── StatsBar.tsx               # Compact single-line stat links (N connectors · N new · ...)
 │   ├── data/
 │   │   ├── connectors.json            # Generated by fetch-data.mjs (~490KB)
 │   │   └── stats.json                 # Generated aggregate statistics
