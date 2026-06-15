@@ -1,6 +1,7 @@
 import ConnectorCard from './ConnectorCard';
 import SortDropdown from './SortDropdown';
 import type { Connector, SortOption } from '../types';
+import { getConnectorListKey } from '../utils/connectorUtils';
 
 interface CatalogGridProps {
   connectors: Connector[];
@@ -31,7 +32,11 @@ export default function CatalogGrid({ connectors, totalCount, sortBy, onSortChan
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
           {connectors.map(connector => (
-            <ConnectorCard key={connector.id} connector={connector} onClick={() => onConnectorClick(connector)} />
+            <ConnectorCard
+              key={getConnectorListKey(connector)}
+              connector={connector}
+              onClick={() => onConnectorClick(connector)}
+            />
           ))}
         </div>
       )}

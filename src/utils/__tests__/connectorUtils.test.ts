@@ -3,6 +3,7 @@ import type { Connector } from '../../types';
 import {
   formatRelativeDate,
   formatFullDate,
+  getConnectorListKey,
   getUpdateFreshness,
   sortConnectors,
   getRecentlyUpdated,
@@ -91,6 +92,20 @@ describe('formatFullDate', () => {
 
   it('returns "Unknown" for invalid input', () => {
     expect(formatFullDate('garbage')).toBe('Unknown');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getConnectorListKey
+// ---------------------------------------------------------------------------
+describe('getConnectorListKey', () => {
+  it('distinguishes connectors that share the same id across types', () => {
+    const certifiedKey = getConnectorListKey(makeConnector({ id: 'CardPlatform', type: 'certified' }));
+    const customKey = getConnectorListKey(makeConnector({ id: 'CardPlatform', type: 'custom' }));
+
+    expect(certifiedKey).toBe('certified:CardPlatform');
+    expect(customKey).toBe('custom:CardPlatform');
+    expect(certifiedKey).not.toBe(customKey);
   });
 });
 

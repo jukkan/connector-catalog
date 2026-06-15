@@ -62,6 +62,13 @@ export function getUpdateFreshness(dateStr: string | null): { color: string; lab
 }
 
 /**
+ * Build a stable React list key for connector cards.
+ */
+export function getConnectorListKey(connector: Pick<Connector, 'id' | 'type'>): string {
+  return `${connector.type}:${connector.id}`;
+}
+
+/**
  * Sort connectors by the given sort option.
  * Returns a new sorted array (does not mutate the input).
  */
