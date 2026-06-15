@@ -4,6 +4,7 @@ import FilterBar from './components/FilterBar';
 import CatalogGrid from './components/CatalogGrid';
 import StatsBar from './components/StatsBar';
 import ConnectorDetailModal from './components/ConnectorDetailModal';
+import RecentConnectors from './components/RecentConnectors';
 import Footer from './components/Footer';
 import connectorsData from './data/connectors.json';
 import { sortConnectors } from './utils/connectorUtils';
@@ -42,7 +43,6 @@ function App() {
   const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
   const [sortBy, setSortBy] = useState<SortOption>(getInitialState().sort);
-  const [statsCollapsed, setStatsCollapsed] = useState(false);
   const [selectedConnector, setSelectedConnector] = useState<Connector | null>(() => {
     const { connectorId } = getInitialState();
     if (connectorId) {
@@ -172,6 +172,13 @@ function App() {
     return { updatedThisMonth, newConnectors, withTriggers };
   }, []);
 
+  const isFiltered =
+    search.length > 0 ||
+    selectedTypes.length > 0 ||
+    selectedAuthTypes.length > 0 ||
+    hasTriggers !== null ||
+    selectedCategories.length > 0;
+
   const handleStatClick = (action: 'all' | 'updated' | 'new' | 'triggers') => {
     switch (action) {
       case 'all':
@@ -248,9 +255,17 @@ function App() {
               newConnectors={statValues.newConnectors}
               withTriggers={statValues.withTriggers}
               onStatClick={handleStatClick}
-              collapsed={statsCollapsed}
-              onToggleCollapse={() => setStatsCollapsed(current => !current)}
             />
+
+            {/* What's New strip — hidden when filters are active */}
+            {!isFiltered && (
+              <RecentConnectors
+                connectors={connectors}
+                onConnectorClick={setSelectedConnector}
+                onViewNew={() => handleStatClick('new')}
+                onViewUpdated={() => handleStatClick('updated')}
+              />
+            )}
 
             {/* Connector Grid */}
             <CatalogGrid

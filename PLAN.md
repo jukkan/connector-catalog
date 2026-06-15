@@ -268,14 +268,19 @@ All filter state is synced to URL search params:
 - [x] Deployed to custom domain `connectors.jukkan.com` via GitHub Pages
 - [x] `base: '/'` in Vite config for custom domain
 
-### Phase 5 — Featured brands and hero section (partial)
+### Phase 5 — Recent activity hero (replaces featured brands)
 
-- [ ] Curated `featured.ts` with ~20 well-known brands (Adobe, Salesforce, SAP, ServiceNow, Slack, HubSpot, Jira, GitHub, Zendesk, Twilio, Mailchimp, DocuSign, Stripe, AWS, Notion, Google Sheets, etc.)
-- [ ] Featured tiles above the grid with larger brandColor circles and highlight tags
+Featured brands were dropped in favour of surfacing connector freshness — more useful and requires no curation.
+
 - [x] Page header with title, subtitle showing live connector count
 - [x] Footer with attribution and repo link
 - [x] OpenGraph and Twitter Card meta tags for social sharing
 - [x] Favicon (SVG)
+- [ ] **Compact stats bar** — single line of clickable text links (N connectors · N new · N updated · N with triggers). Replaces the 4-card grid; frees vertical space for the activity strip.
+- [ ] **"What's New" strip** — two horizontally scrollable rows of compact mini-cards:
+  - *New connectors* — `firstCommitDate` within 90 days, sorted newest first, "View all →" applies `added` sort
+  - *Recently updated* — `lastCommitDate` within 30 days and NOT new, sorted newest first, "View all →" applies `updated` sort
+  - Strip is hidden when any filter (search, type, auth, triggers, category) is active, so it never competes with search results
 
 ### Phase 6 — Icons (enhancement, requires external data)
 
