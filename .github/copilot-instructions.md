@@ -8,7 +8,7 @@ This is a static React SPA that catalogs Microsoft Power Platform connectors. Th
 
 - **React 19** (functional components, hooks only — no class components)
 - **TypeScript 5** with `strict: true` (`noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`)
-- **Vite 7** as bundler (config in `vite.config.ts`, base path `/connector-catalog/`)
+- **Vite 7** as bundler (config in `vite.config.ts`, base path `/` — deployed to custom domain `connectors.jukkan.com`)
 - **Tailwind CSS 4** via `@tailwindcss/postcss` — styles applied exclusively through utility classes, no CSS modules or styled-components
 - **No router, no state library, no component library** — state is plain React hooks in `App.tsx`
 
@@ -99,8 +99,9 @@ This is a static React SPA that catalogs Microsoft Power Platform connectors. Th
 - **Brand colors** can be `null`. Guard with fallback when using as `style.backgroundColor`.
 - **The data files are generated** — do not hand-edit `connectors.json` or `stats.json`.
 - **Vite base path** is `/connector-catalog/`. Asset references and routing must account for this.
-- **No test framework is configured yet**. If adding tests, use Vitest (Vite-native) and React Testing Library.
+- **Test framework is Vitest** (`vitest.config.ts`). Tests live in `src/data/__tests__/` and `src/utils/__tests__/`. Run with `npm test`.
 - **Tailwind v4** uses `@import "tailwindcss"` instead of the v3 `@tailwind` directives. Do not use v3 syntax.
+- **Categories are semicolon-separated strings** and are normalized to canonical casing by `normalizeCategories()` in `fetch-data.mjs`. Do not add new raw category strings — extend the `CATEGORY_CANONICAL` map instead.
 
 ## Build & Run Commands
 

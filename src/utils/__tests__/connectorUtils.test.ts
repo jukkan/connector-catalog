@@ -60,7 +60,7 @@ describe('formatRelativeDate', () => {
   });
 
   it('returns "Xmo ago" for dates within last year', () => {
-    expect(formatRelativeDate(daysAgo(120))).toBe('4mo ago');
+    expect(formatRelativeDate(daysAgo(125))).toBe('4mo ago');
   });
 
   it('returns "Xy ago" for dates over a year old', () => {

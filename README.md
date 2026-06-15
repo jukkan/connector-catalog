@@ -149,27 +149,34 @@ Parameters can be combined: `?type=certified&auth=oauth2&q=sales&category=Produc
 
 ## Data Model
 
-Each connector record contains:
+Each connector record in `connectors.json` contains:
 
 ```typescript
 interface Connector {
-  id: string;            // Directory name in the source repo
-  displayName: string;   // From swagger info.title
-  description: string;   // From swagger info.description
-  publisher: string;     // From apiProperties or swagger annotation
+  id: string;                  // Directory name in the source repo
+  displayName: string;         // From swagger info.title
+  description: string;         // From swagger info.description
+  publisher: string;           // From apiProperties or swagger annotation
   type: 'certified' | 'independent' | 'custom';
-  brandColor: string;    // Icon brand color hex
+  brandColor: string | null;   // Icon brand color hex (null for ~1% of connectors)
   authType: 'oauth2' | 'apiKey' | 'basic' | 'none';
   operationCount: number;
   actionCount: number;
   triggerCount: number;
   hasTriggers: boolean;
-  categories: string | null;   // Semicolon-separated
-  website: string | null;
-  contactUrl: string | null;
-  contactName: string | null;
+  categories: string | null;   // Semicolon-separated, normalized (e.g. "Sales and CRM;Data")
+  website: string | null;      // From x-ms-connector-metadata
+  contactUrl: string | null;   // From swagger info.contact.url
+  contactName: string | null;  // From swagger info.contact.name
+  firstCommitDate: string | null;  // ISO 8601 — first git commit for this connector
+  lastCommitDate: string | null;   // ISO 8601 — most recent git commit
+  apiVersion: string | null;   // From swagger info.version
+  privacyPolicy: string | null; // From x-ms-connector-metadata "Privacy policy"
+  capabilities: string[];      // From apiProperties.json (e.g. ["actions", "triggers"])
 }
 ```
+
+Category values are normalized to canonical casing by `fetch-data.mjs` to handle inconsistencies in upstream files (e.g. `"website"` → `"Website"`).
 
 ## License
 

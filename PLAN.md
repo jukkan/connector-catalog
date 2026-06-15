@@ -2,7 +2,7 @@
 
 > **Purpose:** This document captures the vision, research findings, data architecture, and phased roadmap for the Power Platform Connector Catalog. It is intended as context for AI coding agents (GitHub Copilot, Claude Code) working in this repo, and as a reference for contributors.
 >
-> **Last updated:** March 2026
+> **Last updated:** June 2026
 
 ---
 
@@ -191,21 +191,30 @@ These categories are embedded in the swagger files and available for filtering w
 
 ```typescript
 interface Connector {
-  id: string;              // Folder name in repo (e.g. "Salesforce")
-  displayName: string;     // From swagger info.title
-  description: string;     // From swagger info.description (max 200 chars)
-  publisher: string;       // From apiProperties.json
+  id: string;                  // Folder name in repo (e.g. "Salesforce")
+  displayName: string;         // From swagger info.title
+  description: string;         // From swagger info.description
+  publisher: string;           // From apiProperties.json or swagger annotation
   type: 'certified' | 'independent' | 'custom';
-  brandColor: string;      // Hex from apiProperties (e.g. "#0066FF")
-  authType: string;        // From swagger securityDefinitions
+  brandColor: string | null;   // Hex from apiProperties (e.g. "#0066FF")
+  authType: 'oauth2' | 'apiKey' | 'basic' | 'none';
   operationCount: number;
   actionCount: number;
   triggerCount: number;
   hasTriggers: boolean;
-  categories: string;      // Semicolon-separated (e.g. "Sales and CRM;Data")
-  website: string;         // From x-ms-connector-metadata
+  categories: string | null;   // Semicolon-separated, normalized (e.g. "Sales and CRM;Data")
+  website: string | null;      // From x-ms-connector-metadata
+  contactUrl: string | null;   // From swagger info.contact.url
+  contactName: string | null;  // From swagger info.contact.name
+  firstCommitDate: string | null;  // ISO 8601 — first git commit touching this connector
+  lastCommitDate: string | null;   // ISO 8601 — most recent git commit
+  apiVersion: string | null;   // From swagger info.version
+  privacyPolicy: string | null; // From x-ms-connector-metadata "Privacy policy"
+  capabilities: string[];      // From apiProperties.json (e.g. ["actions", "triggers"])
 }
 ```
+
+Category values are normalized via `CATEGORY_CANONICAL` in `fetch-data.mjs` to handle case inconsistencies in upstream files (e.g. "website" → "Website").
 
 ### 3.4 URL structure and deep linking
 
@@ -220,50 +229,53 @@ All filter state is synced to URL search params:
 
 ## 4. Phased Roadmap
 
-### Phase 1 — MVP (current state) ✅
+### Phase 1 — MVP ✅
 
 - [x] Data pipeline: `fetch-data.mjs` clones repo, generates `connectors.json`
 - [x] Vite + React + TypeScript + Tailwind scaffold
 - [x] Catalog grid with connector cards
 - [x] Search (text input, searches across name/description/publisher/category)
 - [x] Filter chips (type, auth, triggers)
-- [ ] Category filter (dropdown or scrollable chips for ~19 categories)
+- [x] Category filter (select dropdown + active pill chips)
 - [x] Basic card rendering with brandColor initials, publisher, description, operation count
 
-### Phase 2 — Visual polish (next)
+### Phase 2 — Visual polish ✅
 
-- [ ] Stats bar: horizontal row of 4 stat cards (total connectors, total operations, categories count, last updated), numbers formatted with locale separators
-- [ ] Filter UX: inline pill chips with active state styling, "Clear all" button, category dropdown
-- [ ] Card styling: proper card borders/shadows/hover, brandColor 40x40 circle with white initial letter, type badge (Certified=green, Independent=blue, Custom=gray), trigger indicator (⚡), 2-line description clamp
-- [ ] Grid: responsive 1/2/3/4 columns, max-width container, subtle "Showing X of Y" text
-- [ ] Sort dropdown: Name A-Z, Name Z-A, Most Operations, Publisher A-Z
-- [ ] Dark mode toggle (sun/moon icon)
-- [ ] URL param sync for all filters and sort
+- [x] Stats bar: 4 interactive clickable stat cards (total connectors, updated this month, new connectors, with triggers), numbers formatted with locale separators, collapsible
+- [x] Filter UX: inline pill chips with active state styling, "Clear all" button, category dropdown
+- [x] Card styling: brandColor 40×40 circle, type badge (green/blue/gray), trigger indicator (⚡), 2-line description clamp, freshness indicator bar (top edge color)
+- [x] Grid: responsive 1/2/3 columns, max-width container, "Showing X of Y connectors" header
+- [x] Sort dropdown: Name A-Z, Name Z-A, Most Operations, Publisher A-Z, Recently Updated, Recently Added
+- [x] Dark mode toggle (sun/moon icon), persisted via `localStorage`, respects `prefers-color-scheme`
+- [x] URL param sync for all filters and sort
 
-### Phase 3 — Connector detail
+### Phase 3 — Connector detail ✅
 
-- [ ] Slide-in side panel or modal when clicking a connector card
-- [ ] Full description, publisher, auth type, categories as badges
-- [ ] Links: website (from data), GitHub repo link (constructed), MS Learn docs link (constructed)
-- [ ] Operation count summary
-- [ ] Deep link via `?connector={id}` URL param
-- [ ] Keyboard navigation (Escape to close)
+- [x] Modal when clicking a connector card (Escape or backdrop click to close)
+- [x] Full description, publisher, auth type, categories as badges, capabilities as badges
+- [x] Links: vendor website, contact URL, privacy policy, GitHub repo (constructed), MS Learn docs (constructed)
+- [x] Action count + trigger count
+- [x] Timeline: first published date + last updated date (relative and absolute)
+- [x] API version badge
+- [x] Deep link via `?connector={id}` URL param
+- [x] Keyboard navigation (Escape to close)
 
-### Phase 4 — CI/CD and automation
+### Phase 4 — CI/CD and automation ✅
 
-- [ ] GitHub Actions workflow: weekly Monday cron + manual dispatch + on-push
-- [ ] Data refresh step: run `fetch-data.mjs`, commit if changed
-- [ ] Build and deploy to GitHub Pages
-- [ ] Proper `base` path in Vite config for GitHub Pages
+- [x] Two separate GitHub Actions workflows:
+  - `update-data.yml` — weekly Sunday cron + manual dispatch: clones repo, runs `fetch-data.mjs`, runs tests, verifies build, commits data if changed
+  - `deploy.yml` — on push to main + manual dispatch: runs tests, builds, deploys to GitHub Pages
+- [x] Deployed to custom domain `connectors.jukkan.com` via GitHub Pages
+- [x] `base: '/'` in Vite config for custom domain
 
-### Phase 5 — Featured brands and hero section
+### Phase 5 — Featured brands and hero section (partial)
 
 - [ ] Curated `featured.ts` with ~20 well-known brands (Adobe, Salesforce, SAP, ServiceNow, Slack, HubSpot, Jira, GitHub, Zendesk, Twilio, Mailchimp, DocuSign, Stripe, AWS, Notion, Google Sheets, etc.)
-- [ ] Featured tiles above filter bar with larger brandColor circles and highlight tags
-- [ ] Page header with title, subtitle, connector count
-- [ ] Footer with attribution and repo link
-- [ ] OpenGraph meta tags for social sharing
-- [ ] Favicon
+- [ ] Featured tiles above the grid with larger brandColor circles and highlight tags
+- [x] Page header with title, subtitle showing live connector count
+- [x] Footer with attribution and repo link
+- [x] OpenGraph and Twitter Card meta tags for social sharing
+- [x] Favicon (SVG)
 
 ### Phase 6 — Icons (enhancement, requires external data)
 
@@ -388,36 +400,45 @@ This section documents the architectural differences between the three connector
 ```
 connector-catalog/
 ├── .github/
+│   ├── copilot-instructions.md        # AI coding agent context
 │   └── workflows/
-│       └── refresh-and-deploy.yml     # Weekly cron: fetch-data → build → deploy
+│       ├── update-data.yml            # Weekly Sunday cron: fetch-data → test → commit
+│       └── deploy.yml                 # On push to main: test → build → deploy to Pages
 ├── scripts/
-│   └── fetch-data.mjs                 # Data pipeline: clone repo → parse → JSON
+│   └── fetch-data.mjs                 # Data pipeline: clone repo → parse → normalize → JSON
 ├── src/
 │   ├── components/
-│   │   ├── CatalogGrid.tsx
-│   │   ├── ConnectorCard.tsx
-│   │   ├── ConnectorDetail.tsx        # Phase 3
-│   │   ├── FeaturedBrands.tsx         # Phase 5
-│   │   ├── FilterBar.tsx
-│   │   ├── SearchBar.tsx
-│   │   ├── SortDropdown.tsx           # Phase 2
-│   │   └── StatsBar.tsx
+│   │   ├── CatalogGrid.tsx            # Responsive grid with result count header
+│   │   ├── ConnectorCard.tsx          # Card with brandColor avatar, badges, freshness bar
+│   │   ├── ConnectorDetailModal.tsx   # Full detail modal with links and timeline
+│   │   ├── FilterBar.tsx              # Chip filters: type, auth, triggers, category
+│   │   ├── Footer.tsx                 # Attribution footer
+│   │   ├── SearchBar.tsx              # Debounced text search (300ms)
+│   │   ├── SortDropdown.tsx           # 6-option sort selector
+│   │   └── StatsBar.tsx               # 4 interactive stat cards, collapsible
 │   ├── data/
-│   │   ├── connectors.json            # Generated by fetch-data.mjs
-│   │   ├── stats.json                 # Generated by fetch-data.mjs
-│   │   └── featured.ts               # Phase 5: curated brand list
-│   ├── hooks/
-│   │   ├── useFilters.ts
-│   │   └── useSearch.ts
-│   ├── types/
-│   │   └── connector.ts
-│   ├── App.tsx
-│   └── main.tsx
+│   │   ├── connectors.json            # Generated by fetch-data.mjs (~490KB)
+│   │   └── stats.json                 # Generated aggregate statistics
+│   ├── utils/
+│   │   ├── connectorUtils.ts          # Date formatting, sort, freshness, filter helpers
+│   │   └── __tests__/
+│   │       └── connectorUtils.test.ts
+│   ├── data/
+│   │   └── __tests__/
+│   │       ├── connectors.test.ts
+│   │       └── stats.test.ts
+│   ├── types.ts                       # Connector, Stats, FilterState, SortOption
+│   ├── App.tsx                        # Root: all state, filtering, URL sync, dark mode
+│   ├── index.css                      # Tailwind import + dark mode variant
+│   └── main.tsx                       # React DOM entry point
 ├── public/
+│   └── favicon.svg
+├── index.html                         # HTML shell with OG/Twitter meta tags
 ├── package.json
-├── vite.config.ts
-├── tailwind.config.js
+├── vite.config.ts                     # base: '/' for custom domain
+├── postcss.config.js
 ├── tsconfig.json
+├── vitest.config.ts
 └── PLAN.md                            # ← This file
 ```
 
@@ -427,13 +448,16 @@ connector-catalog/
 
 | Decision | Rationale |
 |----------|-----------|
-| **Static site, no backend** | Free hosting, fast, simple. ~1,100 connectors at ~490KB JSON is manageable client-side. |
-| **BrandColor initials instead of icons (MVP)** | Icons require an authenticated API call or scraping. Initials with brandColor look clean and work for all connectors. |
-| **GitHub repo as primary data source** | Public, no auth, rich metadata (OpenAPI specs). Covers ~1,100 of ~1,500 total connectors. |
-| **Skip first-party connectors in MVP** | Requires API access or scraping. The ~1,100 repo connectors are still more than any other community catalog shows. |
-| **Skip tier data in MVP** | All independent publisher connectors are Premium. Certified connectors have mixed tiers but the data isn't in the repo. Can be added when API/scrape source is integrated. |
+| **Static site, no backend** | Free hosting, fast, simple. ~1,140 connectors at ~490KB JSON is manageable client-side. |
+| **BrandColor initials instead of icons** | Icons require an authenticated API call or scraping. Initials with brandColor look clean and work for all connectors. Fallback to neutral gray (`#6B7280`) when `brandColor` is null. |
+| **GitHub repo as primary data source** | Public, no auth, rich metadata (OpenAPI specs). Covers ~1,140 of ~1,500 total connectors. |
+| **Skip first-party connectors for now** | Requires API access or scraping. The ~1,140 repo connectors are still more than any other community catalog shows. |
+| **Skip tier data for now** | All independent publisher connectors are Premium. Certified connectors have mixed tiers but the data isn't in the repo. Can be added when API/scrape source is integrated. |
+| **Two separate CI/CD workflows** | `update-data.yml` commits JSON changes; `deploy.yml` deploys on every push to main. Separating them means a data update that produces no changes doesn't trigger a deploy, and a UI-only push doesn't wait for the data clone. |
+| **Git history for connector dates** | `--filter=blob:none` clone includes full commit history without blob content. Parsing the log gives first-added and last-updated dates per connector without any external API, enabling "Recently Added" / "Recently Updated" sort and freshness indicators. |
+| **Category normalization via canonical map** | Upstream connector files have inconsistent casing (e.g. "website" vs "Website"). A fixed `CATEGORY_CANONICAL` map in `fetch-data.mjs` normalizes at extraction time so the UI never sees duplicates. |
 | **Weekly data refresh** | Connectors don't change daily. Weekly cron balances freshness vs. build cost. |
-| **Power Platform only for MVP** | The three connector families are architecturally unrelated. Shipping one well beats shipping three poorly. |
+| **Power Platform only for now** | The three connector families are architecturally unrelated. Shipping one well beats shipping three poorly. |
 
 ---
 

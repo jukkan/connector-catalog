@@ -59,7 +59,7 @@ export default function ConnectorCard({ connector, onClick }: ConnectorCardProps
       <div className="flex items-center gap-3 mb-2">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-          style={{ backgroundColor: connector.brandColor }}
+          style={{ backgroundColor: connector.brandColor ?? '#6B7280' }}
         >
           {connector.displayName.charAt(0).toUpperCase()}
         </div>

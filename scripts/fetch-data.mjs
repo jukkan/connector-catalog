@@ -8,6 +8,42 @@ const __dirname = path.dirname(__filename);
 
 const REPO_URL = 'https://github.com/microsoft/PowerPlatformConnectors.git';
 const BRANCH = 'dev';
+
+const CATEGORY_CANONICAL = new Map([
+  ['productivity', 'Productivity'],
+  ['data', 'Data'],
+  ['ai', 'AI'],
+  ['content and files', 'Content and Files'],
+  ['it operations', 'IT Operations'],
+  ['communication', 'Communication'],
+  ['sales and crm', 'Sales and CRM'],
+  ['business management', 'Business Management'],
+  ['collaboration', 'Collaboration'],
+  ['website', 'Website'],
+  ['lifestyle and entertainment', 'Lifestyle and Entertainment'],
+  ['business intelligence', 'Business Intelligence'],
+  ['marketing', 'Marketing'],
+  ['finance', 'Finance'],
+  ['security', 'Security'],
+  ['commerce', 'Commerce'],
+  ['human resources', 'Human Resources'],
+  ['social media', 'Social Media'],
+  ['internet of things', 'Internet of Things'],
+]);
+
+function normalizeCategories(raw) {
+  if (!raw) return null;
+  const normalized = raw
+    .split(';')
+    .map(c => {
+      const trimmed = c.trim();
+      return CATEGORY_CANONICAL.get(trimmed.toLowerCase()) ?? trimmed;
+    })
+    .filter(Boolean)
+    .join(';');
+  return normalized || null;
+}
+
 const CONNECTOR_TYPES = [
   { dir: 'certified-connectors', type: 'certified' },
   { dir: 'independent-publisher-connectors', type: 'independent' },
@@ -110,7 +146,7 @@ function processConnector(connectorPath, connectorId, type, dateMap) {
 
   // Extract metadata (can be at root level or inside info)
   const metadata = swagger['x-ms-connector-metadata'] || swagger.info?.['x-ms-connector-metadata'];
-  const categories = getMetadataValue(metadata, 'Categories');
+  const categories = normalizeCategories(getMetadataValue(metadata, 'Categories'));
   const website = getMetadataValue(metadata, 'Website');
 
   // Extract contact information
