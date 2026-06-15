@@ -320,8 +320,52 @@ Baseline design health score was 25/40 (June 2026). The P1 issues (empty state d
 
 ### Phase 9 — Additional connector families (future)
 
-- [ ] **Copilot connectors** (formerly Graph connectors): Parse gallery markdown from `MicrosoftDocs/OfficeDocs-MicrosoftSearch` repo. ~150+ connectors. Different schema: connector type (synced/federated), categories, publisher. Display in a separate tab or section with clear labeling that these are content-indexing connectors for M365 Copilot, not API-bridge connectors.
-- [ ] **Power Query connectors**: Parse `MicrosoftDocs/powerquery-docs` repo (`connectors/index.md`). ~200-250 connectors. Different schema: per-product support matrix (Excel, Power BI, Fabric Dataflow Gen2, etc.). Display in a separate tab or section.
+#### 9a — Copilot connectors
+
+Source: `MicrosoftDocs/copilot-connectors`, branch `public` (see §6.5 for full details).
+
+**Data pipeline additions (`scripts/fetch-copilot-connectors.mjs`):**
+- [ ] Clone `MicrosoftDocs/copilot-connectors --depth 1 --branch public`
+- [ ] Parse `connectors-gallery-microsoft.md` and `connectors-gallery-partners.md`: extract `displayName`, `publisher`, `description`, `category` (from `##` heading), `connectorSubtype` (synced vs federated, derived from link target), `isPreview` (from "(preview)" suffix), `isCertifiedForCopilot` (from "Certified" section in partner gallery), and `sourceDocSlug`
+- [ ] For each MS-built synced connector with a matching `*-overview.md`: extract `ms.date` as `docLastUpdated`
+- [ ] Generate stable IDs as `slugify(displayName) + '-' + slugify(publisher)` (required because the same name can have multiple publishers in the partner gallery)
+- [ ] Write `src/data/copilot-connectors.json`
+- [ ] Add the fetch to `update-data.yml` cron
+
+**Schema (`CopilotConnector` interface):**
+
+```typescript
+interface CopilotConnector {
+  id: string;                          // slugify(name) + '-' + slugify(publisher)
+  displayName: string;                 // Gallery table col 1, "(preview)" stripped
+  publisher: string;                   // "Microsoft" for MS-built; vendor name for partners
+  publisherType: 'microsoft' | 'partner';
+  connectorSubtype: 'synced' | 'federated';
+  isPreview: boolean;
+  isCertifiedForCopilot: boolean;      // Currently 3 partners: Box, CB Insights, getAbstract
+  description: string;                 // Gallery table col 3
+  category: string;                    // From ## heading above the table row
+  learnMoreUrl: string | null;         // MS Learn URL for MS-built synced; vendor URL for partners; generic federated overview URL for federated
+  learnMoreIsExternal: boolean;        // true for partner connector URLs
+  sourceDocSlug: string | null;        // e.g. "aha-overview"; null for federated and partner connectors
+  docLastUpdated: string | null;       // ms.date from overview frontmatter; MS-built synced only
+}
+```
+
+**Field coverage:** `displayName`, `publisher`, `publisherType`, `description`, `category`, `connectorSubtype`, `isPreview` — 100%. `isCertifiedForCopilot`, `learnMoreUrl` — 100% (quality varies by type). `docLastUpdated`, `sourceDocSlug` — ~37% (MS-built synced only). Icon — **0%** (no public data source).
+
+**UI treatment:**
+- [ ] Separate "Copilot Connectors" tab (not mixed into the Power Platform connector grid) — architecturally different product, different audience (M365 admins vs. makers), different card vocabulary
+- [ ] Cards show: name, publisher badge, `synced/federated` badge, `preview` badge, `certified` badge, category, description. No operations count, no auth type, no freshness bar.
+- [ ] Stats strip: total · Microsoft-built · partner · federated · preview
+- [ ] Filters: publisher type (Microsoft / partner), connector subtype (synced / federated), preview toggle, certified toggle, category
+- [ ] "Learn more" links open externally for partner connectors; open MS Learn detail page for MS-built synced connectors
+- [ ] Initial avatar fallback (brand color not available; use a fixed color + initials, similar to Power Platform connectors without a brand color)
+- [ ] Unified search bar spans both tabs with results grouped or labeled by family
+
+#### 9b — Power Query connectors
+
+- [ ] Parse `MicrosoftDocs/powerquery-docs` repo (`connectors/index.md`). ~200-250 connectors. Different schema: per-product support matrix (Excel, Power BI, Fabric Dataflow Gen2, etc.). Display in a separate tab or section.
 - [ ] Unified search across all three families with clear family labeling.
 
 ---
@@ -344,12 +388,16 @@ This section documents the architectural differences between the three connector
 ### 5.2 Copilot connectors (formerly Microsoft Graph connectors)
 
 - **What they do:** Ingest and semantically index external content into Microsoft Graph for search and AI reasoning
-- **Used in:** Microsoft 365 Copilot, Microsoft Search, Context IQ, Copilot Studio (as knowledge sources)
+- **Used in:** Microsoft 365 Copilot Chat, Microsoft Search, Copilot in Excel, Researcher agent, Copilot Studio (as knowledge sources)
 - **Architecture:** External content → Graph `externalConnections` API → Microsoft Search index
-- **Auth model:** Admin-configured, tenant-scoped (not per-user)
-- **Types:** Synced (periodic crawl, content copied to Graph) and Federated (real-time MCP-based, preview)
-- **Key difference from Power Platform connectors:** Read-only content indexing, not live API calls. No actions or triggers. Admin-managed, not maker-managed.
-- **Count:** ~50 Microsoft-built + ~100+ partner-built = ~150+ total
+- **Auth model:** Admin-configured, tenant-scoped (not per-user), managed in M365 Admin Center
+- **Types:**
+  - *Synced* — periodic crawl, content copied to Graph; the classic connector model
+  - *Federated* — real-time MCP-based, content never leaves the source; GA'd April 2026. Partners submit a hosted remote MCP server URL; users authenticate individually (OAuth 2.0 per-user, not admin service account)
+- **Key difference from Power Platform connectors:** Read-only content indexing, not live API calls. No actions or triggers. Admin-managed, not maker-managed. Operations count concept does not apply.
+- **Count (June 2026):** 89 Microsoft-built (77 synced + 12 federated, 11 in preview) + ~150 partner gallery entries (~125 unique connector names across 23 publishers; some names appear multiple times with different publishers) = ~239 total gallery entries
+- **Gallery certification:** 3 partner connectors are currently certified "for Microsoft 365 Copilot" (Box, CB Insights, getAbstract)
+- **No icons available** from any public data source — the admin.microsoft.com gallery shows icons but no CDN URL pattern is publicly discoverable
 
 ### 5.3 Power Query connectors
 
@@ -404,9 +452,18 @@ This section documents the architectural differences between the three connector
 
 ### 6.5 Copilot connectors source
 
-- **Gallery page:** `https://learn.microsoft.com/en-us/microsoftsearch/connectors-gallery`
-- **Underlying repo:** `MicrosoftDocs/OfficeDocs-MicrosoftSearch` (public, markdown)
-- **No API** for catalog listing (only tenant-scoped connection management)
+- **Gallery page (new canonical URL):** `https://learn.microsoft.com/en-us/microsoft-365/copilot/connectors/connectors-gallery` (old `microsoftsearch/connectors-gallery` URL redirects here)
+- **Source repo:** `MicrosoftDocs/copilot-connectors` (public), branch `public` — **not** `OfficeDocs-MicrosoftSearch` which is now inaccessible
+- **Key files in repo:**
+  - `copilot-connectors/connectors-gallery-microsoft.md` — 89 Microsoft-built connectors as markdown tables, grouped by 13 category headings
+  - `copilot-connectors/connectors-gallery-partners.md` — ~150 partner connector entries, same structure; includes "Certified for Microsoft 365 Copilot" section
+  - `copilot-connectors/{slug}-overview.md` — 59 per-connector detail pages for Microsoft-built synced connectors (frontmatter includes `ms.date`)
+  - `copilot-connectors/TOC.yml` — 696-line table of contents YAML; parseable for connector tree structure
+- **Data format:** Markdown tables only. No JSON, no YAML data files. No machine-readable connector schema.
+- **No API** for catalog listing — the Microsoft Graph Connections API (`/v1.0/external/connections`) returns only tenant-deployed connections, not the public gallery. Microsoft 365 Admin Center shows icons but no CDN URL pattern is publicly discoverable.
+- **Federated connector type detection:** Derivable from the gallery markdown — synced connectors link to individual overview pages; federated connectors link to `federated-connectors-overview.md` (generic page, no per-connector docs).
+- **Unique ID challenge for partners:** The same connector name can have multiple publishers (e.g., "Atlassian Confluence Cloud" from BA Insight, RheinInsights, and ServiceNow). IDs must combine slugified name + slugified publisher.
+- **Update cadence:** Multiple times per month. Weekly CI is appropriate.
 
 ### 6.6 Power Query connectors source
 
