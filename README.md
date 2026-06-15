@@ -2,7 +2,7 @@
 
 A static single-page application for searching, filtering, and exploring Microsoft Power Platform connectors. Data is sourced from the official [microsoft/PowerPlatformConnectors](https://github.com/microsoft/PowerPlatformConnectors) repository and presented in a fast, client-side catalog with no backend required.
 
-Deployed to GitHub Pages at `/connector-catalog/`.
+Deployed to [https://connectors.jukkan.com](https://connectors.jukkan.com).
 
 ## Features
 
@@ -60,7 +60,7 @@ Deployed to GitHub Pages at `/connector-catalog/`.
 | Language | TypeScript 5 (strict mode) |
 | Build | Vite 7 |
 | Styling | Tailwind CSS 4 via `@tailwindcss/postcss` |
-| Hosting | GitHub Pages (base path `/connector-catalog/`) |
+| Hosting | GitHub Pages (custom domain `connectors.jukkan.com`) |
 | Data source | microsoft/PowerPlatformConnectors (Git shallow clone) |
 
 No runtime dependencies beyond React. No router, no state management library, no component library — all state is managed via `useState`/`useMemo`/`useEffect` hooks in `App.tsx`.
@@ -95,7 +95,7 @@ This clones the PowerPlatformConnectors repo into a temp directory, processes al
 npm run dev
 ```
 
-Opens at `http://localhost:5173/connector-catalog/`.
+Opens at `http://localhost:5173/`.
 
 ### Production Build
 
