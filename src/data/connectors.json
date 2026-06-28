@@ -1896,7 +1896,7 @@
   {
     "id": "BoldSign",
     "displayName": "BoldSign",
-    "description": "BoldSign is a secure, easy-to-use electronic signature solution that provides legally binding ways to send, sign, and manage documents.",
+    "description": "BoldSign connector enables users to send, track, and manage eSignature requests within automated workflows. It helps streamline document signing processes, reduce manual effort, and improve turnaround time.",
     "publisher": "Syncfusion, Inc.",
     "type": "certified",
     "brandColor": "#fe4901",
@@ -1910,7 +1910,7 @@
     "contactUrl": "https://support.boldsign.com",
     "contactName": "BoldSign Support",
     "firstCommitDate": "2024-05-15T19:05:13+05:30",
-    "lastCommitDate": "2026-03-26T18:04:38+05:30",
+    "lastCommitDate": "2026-06-23T17:36:43+05:30",
     "apiVersion": "1.0",
     "privacyPolicy": "https://boldsign.com/privacy-policy/",
     "capabilities": []
@@ -9213,7 +9213,7 @@
   },
   {
     "id": "Penneo Sign",
-    "displayName": "Penneo Sign",
+    "displayName": "Penneo Sign Production",
     "description": "Penneo transforms complex processes into a seamless, human-centric experience. By integrating digital signatures into automated workflows, our platform makes it effortless to validate who approved what data and when, reducing administrative burdens while ensuring full compliance and security. This connector allows you to send documents for signing.",
     "publisher": "Penneo",
     "type": "certified",
@@ -9228,7 +9228,7 @@
     "contactUrl": "https://www.support.penneo.com",
     "contactName": "Penneo Support",
     "firstCommitDate": "2026-02-06T13:03:44+02:00",
-    "lastCommitDate": "2026-03-17T13:26:10+02:00",
+    "lastCommitDate": "2026-06-23T15:02:24+03:00",
     "apiVersion": "1.0.0",
     "privacyPolicy": "https://penneo.com/privacy-policy",
     "capabilities": []
