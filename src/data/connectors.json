@@ -3813,7 +3813,7 @@
     "contactUrl": "https://support.docusign.com",
     "contactName": "docusign",
     "firstCommitDate": "2021-03-15T13:46:40-07:00",
-    "lastCommitDate": "2026-06-16T09:38:40-07:00",
+    "lastCommitDate": "2026-07-02T10:09:06-07:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.docusign.com/company/privacy-policy",
     "capabilities": [
@@ -17930,6 +17930,28 @@
     "lastCommitDate": "2022-04-27T00:05:31+03:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.fintraffic.fi/en/fintraffic/privacy-policy",
+    "capabilities": []
+  },
+  {
+    "id": "Firmaradar",
+    "displayName": "Firmaradar",
+    "description": "Enrichment platform for Norwegian company intelligence. Fuses data from BRREG, Skatteetaten, foreign PEP and sanctions registers, public-grants registries and distress signals, with proprietary enrichment on top (risk scoring, fuzzy person matching, group analytics, audit-grade compliance). Built for KYC, AML, credit, ownership and risk workflows.",
+    "publisher": "Lars Kvanum",
+    "type": "independent",
+    "brandColor": "#da3b01",
+    "authType": "apiKey",
+    "operationCount": 22,
+    "actionCount": 22,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Data;Business Intelligence",
+    "website": "https://firmaradar.no",
+    "contactUrl": "https://firmaradar.no/kontakt",
+    "contactName": "Firmaradar support",
+    "firstCommitDate": "2026-07-03T16:24:57+02:00",
+    "lastCommitDate": "2026-07-03T16:24:57+02:00",
+    "apiVersion": "0.5.1",
+    "privacyPolicy": "https://firmaradar.no/personvern",
     "capabilities": []
   },
   {
