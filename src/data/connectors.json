@@ -8731,12 +8731,12 @@
     "id": "PDF Blocks",
     "displayName": "PDF Blocks",
     "description": "PDF Blocks is a secure, reliable, and fast service to work with PDF documents in your flow. Actions include: Merge PDF documents, add or remove passwords, watermark documents, remove, extract, reverse, and rotate pages, and more. Check https://www.pdfblocks.com/power-automate for documentation, examples, and tutorials. Users can choose to process their PDF documents in US or European servers to comply with data location requirements.",
-    "publisher": "Integrable, LLC",
+    "publisher": "Modern Paper, Inc.",
     "type": "certified",
     "brandColor": "#ff3737",
     "authType": "apiKey",
-    "operationCount": 12,
-    "actionCount": 12,
+    "operationCount": 18,
+    "actionCount": 18,
     "triggerCount": 0,
     "hasTriggers": false,
     "categories": "Content and Files;Productivity",
@@ -8744,8 +8744,8 @@
     "contactUrl": "https://www.pdfblocks.com/support",
     "contactName": "PDF Blocks Support",
     "firstCommitDate": "2020-07-27T19:03:57-04:00",
-    "lastCommitDate": "2021-02-24T23:47:28-03:00",
-    "apiVersion": "1.2.0",
+    "lastCommitDate": "2026-07-22T02:58:24-04:00",
+    "apiVersion": "1.18.0",
     "privacyPolicy": "https://www.pdfblocks.com/privacy",
     "capabilities": []
   },
@@ -10586,6 +10586,28 @@
     "capabilities": [
       "actions"
     ]
+  },
+  {
+    "id": "SOCRadar XTI MCP",
+    "displayName": "SOCRadar XTI MCP",
+    "description": "Bring SOCRadar Extended Threat Intelligence (XTI) into Microsoft Copilot. Enrich indicators of compromise (IP, domain, file hash, URL), investigate threat actors and vulnerabilities, monitor dark web credential leaks, track ransomware activity, and triage incidents - all through the SOCRadar Model Context Protocol (MCP) server.",
+    "publisher": "SOCRadar",
+    "type": "certified",
+    "brandColor": "#1A1F36",
+    "authType": "oauth2",
+    "operationCount": 1,
+    "actionCount": 1,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Security;IT Operations",
+    "website": "https://socradar.io/",
+    "contactUrl": "https://socradar.io/contact/",
+    "contactName": "SOCRadar Support",
+    "firstCommitDate": "2026-07-21T17:27:27+03:00",
+    "lastCommitDate": "2026-07-21T17:27:27+03:00",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://socradar.io/privacy-policy/",
+    "capabilities": []
   },
   {
     "id": "SchoolDigger",
@@ -13265,6 +13287,28 @@
     "capabilities": [
       "actions"
     ]
+  },
+  {
+    "id": "WhoisFreaks",
+    "displayName": "WhoisFreaks",
+    "description": "Unleash the Power of Data with Our Domain and IP Intelligence: \nGain real-time DNS, domain, and IP intelligence to strengthen security, protect your brand, and drive smarter decisions with our advanced data platform.",
+    "publisher": "Unknown",
+    "type": "certified",
+    "brandColor": null,
+    "authType": "apiKey",
+    "operationCount": 24,
+    "actionCount": 24,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Security;Utilities",
+    "website": "https://whoisfreaks.com",
+    "contactUrl": "https://whoisfreaks.com/contact",
+    "contactName": "WhoisFreaks Support",
+    "firstCommitDate": "2026-07-23T18:00:42+05:00",
+    "lastCommitDate": "2026-07-23T18:00:42+05:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://whoisfreaks.com/privacy-policy",
+    "capabilities": []
   },
   {
     "id": "WiredUp KPIs",
