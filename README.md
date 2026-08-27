@@ -1,8 +1,19 @@
-# connector-catalog
+# Power Platform Connector Catalog
 
 A static single-page application for searching, filtering, and exploring Microsoft Power Platform connectors. Data is sourced from the official [microsoft/PowerPlatformConnectors](https://github.com/microsoft/PowerPlatformConnectors) repository and presented in a fast, client-side catalog with no backend required.
 
 Deployed to [https://connectors.jukkan.com](https://connectors.jukkan.com).
+
+## Screenshots
+
+Filter list by category, sort by recency:
+
+<img width="2176" height="1243" alt="image" src="https://github.com/user-attachments/assets/54fa3ef5-2fd5-4edd-adf6-4bf2f3878030" />
+
+See connector details, open links to documentation:
+
+<img width="2177" height="1243" alt="image" src="https://github.com/user-attachments/assets/8868ce29-c385-4824-8db7-56763ae65f70" />
+
 
 ## Features
 
