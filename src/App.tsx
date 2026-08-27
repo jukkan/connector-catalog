@@ -50,7 +50,7 @@ function App() {
     };
   };
 
-  const initialState = useMemo(getInitialState, []);
+  const [initialState] = useState<InitialState>(getInitialState);
 
   const [search, setSearch] = useState(initialState.search);
   const [selectedTypes, setSelectedTypes] = useState<string[]>(initialState.types);
@@ -249,7 +249,7 @@ function App() {
                   className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   aria-label="Open stats page"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v18h18M8 14v4m4-8v8m4-12v12" />
                   </svg>
                 </button>
