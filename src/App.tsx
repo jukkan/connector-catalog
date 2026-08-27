@@ -13,6 +13,17 @@ import type { Connector, SortOption } from './types';
 
 const connectors = connectorsData as Connector[];
 
+interface InitialState {
+  search: string;
+  types: string[];
+  authTypes: string[];
+  hasTriggers: boolean | null;
+  categories: string[];
+  sort: SortOption;
+  connectorId: string | null;
+  view: 'catalog' | 'stats';
+}
+
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -23,7 +34,7 @@ function App() {
   });
 
   // Initialize state from URL params
-  const getInitialState = () => {
+  const getInitialState = (): InitialState => {
     const params = new URLSearchParams(window.location.search);
     const sortParam = params.get('sort') as SortOption | null;
     const validSorts: SortOption[] = ['name-asc', 'name-desc', 'updated', 'added', 'operations-desc', 'publisher-asc'];
