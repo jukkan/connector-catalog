@@ -245,7 +245,10 @@ function App() {
             <div className="flex items-center gap-2">
               {activeView === 'catalog' && (
                 <button
-                  onClick={() => setActiveView('stats')}
+                  onClick={() => {
+                    setSelectedConnector(null);
+                    setActiveView('stats');
+                  }}
                   className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   aria-label="Open stats page"
                 >
