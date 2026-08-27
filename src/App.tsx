@@ -50,15 +50,17 @@ function App() {
     };
   };
 
-  const [search, setSearch] = useState(getInitialState().search);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(getInitialState().types);
-  const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(getInitialState().authTypes);
-  const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
-  const [sortBy, setSortBy] = useState<SortOption>(getInitialState().sort);
-  const [activeView, setActiveView] = useState<'catalog' | 'stats'>(getInitialState().view);
+  const initialState = useMemo(getInitialState, []);
+
+  const [search, setSearch] = useState(initialState.search);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(initialState.types);
+  const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(initialState.authTypes);
+  const [hasTriggers, setHasTriggers] = useState<boolean | null>(initialState.hasTriggers);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialState.categories);
+  const [sortBy, setSortBy] = useState<SortOption>(initialState.sort);
+  const [activeView, setActiveView] = useState<'catalog' | 'stats'>(initialState.view);
   const [selectedConnector, setSelectedConnector] = useState<Connector | null>(() => {
-    const { connectorId } = getInitialState();
+    const { connectorId } = initialState;
     if (connectorId) {
       return (connectorsData as Connector[]).find(c => c.id === connectorId) ?? null;
     }
