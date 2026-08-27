@@ -6,11 +6,23 @@ import StatsBar from './components/StatsBar';
 import ConnectorDetailModal from './components/ConnectorDetailModal';
 import RecentConnectors from './components/RecentConnectors';
 import Footer from './components/Footer';
+import StatsPage from './components/StatsPage';
 import connectorsData from './data/connectors.json';
 import { sortConnectors } from './utils/connectorUtils';
 import type { Connector, SortOption } from './types';
 
 const connectors = connectorsData as Connector[];
+
+interface InitialState {
+  search: string;
+  types: string[];
+  authTypes: string[];
+  hasTriggers: boolean | null;
+  categories: string[];
+  sort: SortOption;
+  connectorId: string | null;
+  view: 'catalog' | 'stats';
+}
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -22,7 +34,7 @@ function App() {
   });
 
   // Initialize state from URL params
-  const getInitialState = () => {
+  const getInitialState = (): InitialState => {
     const params = new URLSearchParams(window.location.search);
     const sortParam = params.get('sort') as SortOption | null;
     const validSorts: SortOption[] = ['name-asc', 'name-desc', 'updated', 'added', 'operations-desc', 'publisher-asc'];
@@ -34,17 +46,21 @@ function App() {
       categories: params.get('category')?.split(',').filter(Boolean) || [],
       sort: (sortParam && validSorts.includes(sortParam) ? sortParam : 'name-asc') as SortOption,
       connectorId: params.get('connector') || null,
+      view: params.get('view') === 'stats' ? 'stats' : 'catalog',
     };
   };
 
-  const [search, setSearch] = useState(getInitialState().search);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(getInitialState().types);
-  const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(getInitialState().authTypes);
-  const [hasTriggers, setHasTriggers] = useState<boolean | null>(getInitialState().hasTriggers);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(getInitialState().categories);
-  const [sortBy, setSortBy] = useState<SortOption>(getInitialState().sort);
+  const [initialState] = useState<InitialState>(getInitialState);
+
+  const [search, setSearch] = useState(initialState.search);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(initialState.types);
+  const [selectedAuthTypes, setSelectedAuthTypes] = useState<string[]>(initialState.authTypes);
+  const [hasTriggers, setHasTriggers] = useState<boolean | null>(initialState.hasTriggers);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialState.categories);
+  const [sortBy, setSortBy] = useState<SortOption>(initialState.sort);
+  const [activeView, setActiveView] = useState<'catalog' | 'stats'>(initialState.view);
   const [selectedConnector, setSelectedConnector] = useState<Connector | null>(() => {
-    const { connectorId } = getInitialState();
+    const { connectorId } = initialState;
     if (connectorId) {
       return (connectorsData as Connector[]).find(c => c.id === connectorId) ?? null;
     }
@@ -61,10 +77,11 @@ function App() {
     if (selectedCategories.length > 0) params.set('category', selectedCategories.join(','));
     if (sortBy !== 'name-asc') params.set('sort', sortBy);
     if (selectedConnector) params.set('connector', selectedConnector.id);
+    if (activeView === 'stats') params.set('view', 'stats');
 
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
     window.history.replaceState({}, '', newUrl);
-  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy, selectedConnector]);
+  }, [search, selectedTypes, selectedAuthTypes, hasTriggers, selectedCategories, sortBy, selectedConnector, activeView]);
 
   // Update dark mode class
   useEffect(() => {
@@ -225,94 +242,114 @@ function App() {
                 {connectors.length.toLocaleString()} Power Platform connectors — search, filter, explore
               </p>
             </div>
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
+            <div className="flex items-center gap-2">
+              {activeView === 'catalog' && (
+                <button
+                  onClick={() => {
+                    setSelectedConnector(null);
+                    setActiveView('stats');
+                  }}
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  aria-label="Open stats page"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v18h18M8 14v4m4-8v8m4-12v12" />
+                  </svg>
+                </button>
               )}
-            </button>
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {darkMode ? (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-screen-2xl mx-auto px-4 py-8">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-          <div className="order-2 lg:order-1 min-w-0 space-y-6">
-            {/* Stats Bar */}
-            <StatsBar
-              totalConnectors={connectors.length}
-              updatedThisMonth={statValues.updatedThisMonth}
-              newConnectors={statValues.newConnectors}
-              withTriggers={statValues.withTriggers}
-              onStatClick={handleStatClick}
-            />
+        {activeView === 'stats' ? (
+          <StatsPage connectors={connectors} onBack={() => setActiveView('catalog')} />
+        ) : (
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+            <div className="order-2 lg:order-1 min-w-0 space-y-6">
+              {/* Stats Bar */}
+              <StatsBar
+                totalConnectors={connectors.length}
+                updatedThisMonth={statValues.updatedThisMonth}
+                newConnectors={statValues.newConnectors}
+                withTriggers={statValues.withTriggers}
+                onStatClick={handleStatClick}
+              />
 
-            {/* What's New strip — hidden when filters are active */}
-            {!isFiltered && (
-              <RecentConnectors
-                connectors={connectors}
+              {/* What's New strip — hidden when filters are active */}
+              {!isFiltered && (
+                <RecentConnectors
+                  connectors={connectors}
+                  onConnectorClick={setSelectedConnector}
+                  onViewNew={() => handleStatClick('new')}
+                  onViewUpdated={() => handleStatClick('updated')}
+                />
+              )}
+
+              {/* Connector Grid */}
+              <CatalogGrid
+                connectors={filteredConnectors}
+                totalCount={connectors.length}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
                 onConnectorClick={setSelectedConnector}
-                onViewNew={() => handleStatClick('new')}
-                onViewUpdated={() => handleStatClick('updated')}
+                search={search}
+                hasActiveFilters={isFiltered}
+                onClearAll={() => handleStatClick('all')}
               />
-            )}
+            </div>
 
-            {/* Connector Grid */}
-            <CatalogGrid
-              connectors={filteredConnectors}
-              totalCount={connectors.length}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-              onConnectorClick={setSelectedConnector}
-              search={search}
-              hasActiveFilters={isFiltered}
-              onClearAll={() => handleStatClick('all')}
-            />
+            <aside className="order-1 lg:order-2 space-y-4 lg:sticky lg:top-6">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                  Search
+                </h2>
+                <SearchBar value={search} onChange={setSearch} />
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                  Filters
+                </h2>
+                <FilterBar
+                  selectedTypes={selectedTypes}
+                  selectedAuthTypes={selectedAuthTypes}
+                  hasTriggers={hasTriggers}
+                  selectedCategories={selectedCategories}
+                  allCategories={allCategories}
+                  onTypeChange={setSelectedTypes}
+                  onAuthTypeChange={setSelectedAuthTypes}
+                  onTriggersChange={setHasTriggers}
+                  onCategoryChange={setSelectedCategories}
+                />
+              </div>
+            </aside>
           </div>
-
-          <aside className="order-1 lg:order-2 space-y-4 lg:sticky lg:top-6">
-            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                Search
-              </h2>
-              <SearchBar value={search} onChange={setSearch} />
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Filters
-              </h2>
-              <FilterBar
-                selectedTypes={selectedTypes}
-                selectedAuthTypes={selectedAuthTypes}
-                hasTriggers={hasTriggers}
-                selectedCategories={selectedCategories}
-                allCategories={allCategories}
-                onTypeChange={setSelectedTypes}
-                onAuthTypeChange={setSelectedAuthTypes}
-                onTriggersChange={setHasTriggers}
-                onCategoryChange={setSelectedCategories}
-              />
-            </div>
-          </aside>
-        </div>
+        )}
       </main>
 
       {/* Footer */}
       <Footer />
 
       {/* Connector Detail Modal */}
-      {selectedConnector && (
+      {activeView === 'catalog' && selectedConnector && (
         <ConnectorDetailModal
           connector={selectedConnector}
           onClose={() => setSelectedConnector(null)}
