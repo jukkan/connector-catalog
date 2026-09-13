@@ -21820,6 +21820,28 @@
     "capabilities": []
   },
   {
+    "id": "PolyDoc",
+    "displayName": "PolyDoc",
+    "description": "Convert HTML or a URL into pixel-perfect PDFs and screenshots, and generate EU-compliant hybrid e-invoices (ZUGFeRD / Factur-X). PolyDoc renders with a real browser engine, so what you see in the page is what you get in the document.",
+    "publisher": "PolyDoc",
+    "type": "independent",
+    "brandColor": "#da3b01",
+    "authType": "none",
+    "operationCount": 2,
+    "actionCount": 2,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Content and Files",
+    "website": "https://polydoc.tech",
+    "contactUrl": "https://polydoc.tech",
+    "contactName": "PolyDoc",
+    "firstCommitDate": "2026-09-08T12:02:51Z",
+    "lastCommitDate": "2026-09-08T12:02:51Z",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://polydoc.tech/legal/privacy-policy/",
+    "capabilities": []
+  },
+  {
     "id": "Polygon",
     "displayName": "Polygon",
     "description": "The Polygon.io Stocks API provides REST endpoints that let you query the latest market data from all US stock exchanges.",
