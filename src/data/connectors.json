@@ -1129,7 +1129,7 @@
     "contactUrl": "http://www.avepoint.com/support",
     "contactName": "AvePoint Support",
     "firstCommitDate": "2020-09-21T17:49:45Z",
-    "lastCommitDate": "2026-08-14T21:18:24+08:00",
+    "lastCommitDate": "2026-09-29T21:55:05+08:00",
     "apiVersion": "1.0",
     "privacyPolicy": "http://www.avepoint.com/privacy-policy",
     "capabilities": []
@@ -2568,8 +2568,8 @@
     "type": "certified",
     "brandColor": "#00285F",
     "authType": "apiKey",
-    "operationCount": 12,
-    "actionCount": 11,
+    "operationCount": 13,
+    "actionCount": 12,
     "triggerCount": 1,
     "hasTriggers": true,
     "categories": "IT Operations;Productivity",
@@ -2577,7 +2577,7 @@
     "contactUrl": "https://certyneo.com/fr/contact",
     "contactName": "Certyneo Support",
     "firstCommitDate": "2026-08-18T18:45:41+02:00",
-    "lastCommitDate": "2026-09-18T15:09:49+02:00",
+    "lastCommitDate": "2026-09-29T16:04:16+02:00",
     "apiVersion": "1.0.0",
     "privacyPolicy": "https://certyneo.com/fr/legal/privacy",
     "capabilities": [
@@ -3929,7 +3929,7 @@
     "contactUrl": "https://support.docusign.com",
     "contactName": "docusign",
     "firstCommitDate": "2026-03-27T08:33:21-05:00",
-    "lastCommitDate": "2026-05-15T10:31:30-05:00",
+    "lastCommitDate": "2026-09-29T09:03:08-05:00",
     "apiVersion": "1.0",
     "privacyPolicy": "https://www.docusign.com/company/privacy-policy",
     "capabilities": []
