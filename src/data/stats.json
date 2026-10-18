@@ -1,46 +1,46 @@
 {
-  "total": 1166,
+  "total": 1169,
   "byType": {
-    "certified": 687,
+    "certified": 690,
     "independent": 455,
     "custom": 24
   },
   "byCategory": {
     "IT Operations": 111,
     "Website": 90,
-    "Productivity": 293,
+    "Productivity": 294,
     "Business Management": 91,
+    "Marketing": 59,
+    "Sales and CRM": 97,
     "Collaboration": 93,
     "AI": 117,
-    "Content and Files": 124,
-    "Marketing": 57,
+    "Content and Files": 125,
     "Data": 268,
     "Communication": 108,
     "Finance": 44,
     "Security": 44,
-    "Sales and CRM": 96,
     "Internet of Things": 17,
     "Business Intelligence": 65,
+    "Social Media": 22,
     "Commerce": 33,
     "Human Resources": 27,
-    "Social Media": 21,
     "Lifestyle and Entertainment": 73,
     "Utilities": 1
   },
   "byAuthType": {
-    "apiKey": 613,
+    "apiKey": 614,
     "none": 217,
-    "oauth2": 251,
-    "basic": 85
+    "basic": 86,
+    "oauth2": 252
   },
-  "timestamp": "2026-10-11T04:27:09.369Z",
-  "recentlyUpdated": 45,
-  "recentlyAdded": 28,
+  "timestamp": "2026-10-18T03:23:25.327Z",
+  "recentlyUpdated": 47,
+  "recentlyAdded": 30,
   "byCapability": {
-    "actions": 143,
+    "actions": 144,
     "triggers": 39,
     "gateway": 2,
     "cloud only": 1
   },
-  "withPrivacyPolicy": 1105
+  "withPrivacyPolicy": 1108
 }
