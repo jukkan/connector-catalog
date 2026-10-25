@@ -82,7 +82,7 @@
     "contactUrl": "https://support.expocad.com/",
     "contactName": "EXPOCAD® Developer Support",
     "firstCommitDate": "2026-10-14T09:57:39-05:00",
-    "lastCommitDate": "2026-10-14T09:57:39-05:00",
+    "lastCommitDate": "2026-10-22T08:19:26-05:00",
     "apiVersion": "v3",
     "privacyPolicy": "https://new.expocad.com/privacy-policy",
     "capabilities": []
@@ -2158,6 +2158,31 @@
     "apiVersion": "1.0",
     "privacyPolicy": "https://support.microsoft.com/privacy",
     "capabilities": []
+  },
+  {
+    "id": "Business Box",
+    "displayName": "Business Box",
+    "description": "Business Box is online booking software for small businesses in Japan. Connect it to list event types and open times, create and cancel bookings, send single use booking links, and start flows the moment a booking is created, rescheduled or cancelled.",
+    "publisher": "App Dev Plus G.K.",
+    "type": "certified",
+    "brandColor": "#171717",
+    "authType": "apiKey",
+    "operationCount": 10,
+    "actionCount": 9,
+    "triggerCount": 1,
+    "hasTriggers": true,
+    "categories": "Productivity;Business Management",
+    "website": "https://marubox.jp",
+    "contactUrl": "https://marubox.jp/support",
+    "contactName": "Business Box support",
+    "firstCommitDate": "2026-10-22T22:21:01+09:00",
+    "lastCommitDate": "2026-10-22T22:21:01+09:00",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://marubox.jp/privacy",
+    "capabilities": [
+      "actions",
+      "triggers"
+    ]
   },
   {
     "id": "CDK Drive Customers",
@@ -7792,8 +7817,8 @@
     "type": "certified",
     "brandColor": "#5053C4",
     "authType": "none",
-    "operationCount": 119,
-    "actionCount": 118,
+    "operationCount": 133,
+    "actionCount": 132,
     "triggerCount": 1,
     "hasTriggers": true,
     "categories": "Business Management;Business Intelligence",
@@ -7801,7 +7826,7 @@
     "contactUrl": "https://help.meisterplan.com/",
     "contactName": "Meisterplan Support",
     "firstCommitDate": "2022-07-26T16:43:50+02:00",
-    "lastCommitDate": "2025-11-26T14:12:13+01:00",
+    "lastCommitDate": "2026-10-22T15:18:08+02:00",
     "apiVersion": "v1.7.0",
     "privacyPolicy": "https://meisterplan.com/privacy-and-data-protection/",
     "capabilities": []

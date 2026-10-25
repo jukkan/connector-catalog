@@ -1,15 +1,15 @@
 {
-  "total": 1169,
+  "total": 1170,
   "byType": {
-    "certified": 690,
+    "certified": 691,
     "independent": 455,
     "custom": 24
   },
   "byCategory": {
     "IT Operations": 111,
     "Website": 90,
-    "Productivity": 294,
-    "Business Management": 91,
+    "Productivity": 295,
+    "Business Management": 92,
     "Marketing": 59,
     "Sales and CRM": 97,
     "Collaboration": 93,
@@ -28,19 +28,19 @@
     "Utilities": 1
   },
   "byAuthType": {
-    "apiKey": 614,
+    "apiKey": 615,
     "none": 217,
     "basic": 86,
     "oauth2": 252
   },
-  "timestamp": "2026-10-18T03:23:25.327Z",
-  "recentlyUpdated": 47,
-  "recentlyAdded": 30,
+  "timestamp": "2026-10-25T03:32:24.628Z",
+  "recentlyUpdated": 46,
+  "recentlyAdded": 29,
   "byCapability": {
-    "actions": 144,
-    "triggers": 39,
+    "actions": 145,
+    "triggers": 40,
     "gateway": 2,
     "cloud only": 1
   },
-  "withPrivacyPolicy": 1108
+  "withPrivacyPolicy": 1109
 }
