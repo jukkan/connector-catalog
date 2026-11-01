@@ -82,7 +82,7 @@
     "contactUrl": "https://support.expocad.com/",
     "contactName": "EXPOCAD® Developer Support",
     "firstCommitDate": "2026-10-14T09:57:39-05:00",
-    "lastCommitDate": "2026-10-22T08:19:26-05:00",
+    "lastCommitDate": "2026-10-30T10:28:05-05:00",
     "apiVersion": "v3",
     "privacyPolicy": "https://new.expocad.com/privacy-policy",
     "capabilities": []
@@ -12999,6 +12999,28 @@
     "capabilities": []
   },
   {
+    "id": "Tvarka Sign MCP",
+    "displayName": "Tvarka Sign MCP",
+    "description": "Let your agent send documents for signature. Tvarka Sign emails each signer, who signs with a simple e-signature or a qualified eID signature. The agent drafts a contract from text, sends it, follows each signer, sends reminders and returns the signed PDF with its evidence package. Every signature is made by a person.",
+    "publisher": "UAB Socialiniai algoritmai",
+    "type": "certified",
+    "brandColor": "#1B4D4B",
+    "authType": "apiKey",
+    "operationCount": 1,
+    "actionCount": 1,
+    "triggerCount": 0,
+    "hasTriggers": false,
+    "categories": "Productivity;Content and Files",
+    "website": "https://tvarka.eu/",
+    "contactUrl": "https://tvarka.eu/",
+    "contactName": "Tvarka",
+    "firstCommitDate": "2026-10-30T18:21:54+02:00",
+    "lastCommitDate": "2026-10-30T18:21:54+02:00",
+    "apiVersion": "1.0.0",
+    "privacyPolicy": "https://tvarka.eu/privacy/",
+    "capabilities": []
+  },
+  {
     "id": "TxtSync",
     "displayName": "TxtSync",
     "description": "TxtSync enables applications to send and receive global SMS while tracking open rates and delivery reports. Easily make SMS part of your organisations worflow processes through TxtSync. \n\nPlease go to https://txtsync.com/microsoft-flow for 3 simple steps on how to get up and running.  Remember to generate your Client Key and Client Secret as these are used for your Username and Password.",
@@ -13536,6 +13558,31 @@
     "apiVersion": "1.0.0",
     "privacyPolicy": "https://wauld.com/privacy-policy",
     "capabilities": []
+  },
+  {
+    "id": "Wavelength",
+    "displayName": "Wavelength",
+    "description": "Wavelength turns call transcripts, meeting notes, and process descriptions into editable process flow diagrams. Create flows from text, find and read flows, export and summarize flows, post flows to chat channels, and start an automation when a flow changes.",
+    "publisher": "MVR Capital Holdings LLC",
+    "type": "certified",
+    "brandColor": "#F6F3EE",
+    "authType": "oauth2",
+    "operationCount": 10,
+    "actionCount": 9,
+    "triggerCount": 1,
+    "hasTriggers": true,
+    "categories": "Productivity;Collaboration",
+    "website": "https://wavelengthflow.com",
+    "contactUrl": "https://wavelengthflow.com",
+    "contactName": "Wavelength support",
+    "firstCommitDate": "2026-10-30T10:47:41-05:00",
+    "lastCommitDate": "2026-10-30T10:47:41-05:00",
+    "apiVersion": "1.0",
+    "privacyPolicy": "https://wavelengthflow.com/privacy.html",
+    "capabilities": [
+      "actions",
+      "triggers"
+    ]
   },
   {
     "id": "Way We Do",
